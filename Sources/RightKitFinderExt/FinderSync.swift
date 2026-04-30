@@ -7,6 +7,7 @@ import Foundation
 final class FinderSync: FIFinderSync {
     private let store = AppConfigurationStore()
     private let fileActions = FileActionService()
+    private let logger = RightKitLogger.finderExtension
 
     override init() {
         super.init()
@@ -34,34 +35,55 @@ final class FinderSync: FIFinderSync {
 
     @objc private func newFile(_ sender: NSMenuItem) {
         guard let directory = currentTargetDirectory(),
-              let template = sender.representedObject as? NewFileTemplate else {
+              let template = template(for: sender.tag) else {
+            logger.error("Failed to resolve new file action. targetDirectory=\(self.currentTargetDirectory()?.path ?? "nil", privacy: .public) tag=\(sender.tag)")
             return
         }
 
         let strings = RightKitStrings(language: store.loadLanguage())
-        _ = try? fileActions.createFile(
-            named: strings.untitledFilename(for: template),
-            from: template,
-            in: directory
-        )
+        do {
+            _ = try fileActions.createFile(
+                named: strings.untitledFilename(for: template),
+                from: template,
+                in: directory
+            )
+        } catch {
+            logger.error("Failed to create file in \(directory.path, privacy: .public): \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     @objc private func copyToFavorite(_ sender: NSMenuItem) {
-        guard let directory = sender.representedObject as? URL else {
+        guard let directory = favoriteDirectoryURL(for: sender.tag) else {
+            logger.error("Failed to resolve copy destination for tag \(sender.tag)")
             return
         }
-        _ = try? fileActions.copyItems(at: selectedURLs(), to: directory)
+
+        do {
+            _ = try fileActions.copyItems(at: selectedURLs(), to: directory)
+        } catch {
+            logger.error("Failed to copy items to \(directory.path, privacy: .public): \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     @objc private func moveToFavorite(_ sender: NSMenuItem) {
-        guard let directory = sender.representedObject as? URL else {
+        guard let directory = favoriteDirectoryURL(for: sender.tag) else {
+            logger.error("Failed to resolve move destination for tag \(sender.tag)")
             return
         }
-        _ = try? fileActions.moveItems(at: selectedURLs(), to: directory)
+
+        do {
+            _ = try fileActions.moveItems(at: selectedURLs(), to: directory)
+        } catch {
+            logger.error("Failed to move items to \(directory.path, privacy: .public): \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     @objc private func copyPath() {
-        try? fileActions.writePathsToPasteboard(selectedURLs())
+        do {
+            try fileActions.writePathsToPasteboard(selectedURLs())
+        } catch {
+            logger.error("Failed to copy paths to pasteboard: \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     @objc private func cutSelection() {
@@ -72,16 +94,21 @@ final class FinderSync: FIFinderSync {
     @objc private func pasteCutItems() {
         guard let directory = currentTargetDirectory(),
               let urls = try? fileActions.urls(from: store.loadCutPasteState()) else {
+            logger.error("Failed to resolve paste action. targetDirectory=\(self.currentTargetDirectory()?.path ?? "nil", privacy: .public)")
             return
         }
 
-        if (try? fileActions.moveItems(at: urls, to: directory)) != nil {
+        do {
+            _ = try fileActions.moveItems(at: urls, to: directory)
             store.saveCutPasteState(nil)
+        } catch {
+            logger.error("Failed to paste cut items into \(directory.path, privacy: .public): \(error.localizedDescription, privacy: .public)")
         }
     }
 
     @objc private func openFavoriteDirectory(_ sender: NSMenuItem) {
-        guard let directory = sender.representedObject as? URL else {
+        guard let directory = favoriteDirectoryURL(for: sender.tag) else {
+            logger.error("Failed to resolve favorite directory for tag \(sender.tag)")
             return
         }
         NSWorkspace.shared.open(directory)
@@ -115,9 +142,9 @@ final class FinderSync: FIFinderSync {
         let submenu = NSMenu(title: strings.newFile)
         let templates = store.loadFileTemplates()
 
-        for template in templates {
+        for (index, template) in templates.enumerated() {
             let child = menuItem(strings.templateTitle(for: template), action: #selector(newFile(_:)))
-            child.representedObject = template
+            child.tag = index
             submenu.addItem(child)
         }
 
@@ -135,9 +162,9 @@ final class FinderSync: FIFinderSync {
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         let submenu = NSMenu(title: title)
 
-        for directory in store.loadFavoriteDirectories() {
+        for (index, directory) in store.loadFavoriteDirectories().enumerated() {
             let child = menuItem(directory.name, action: action)
-            child.representedObject = directory.url
+            child.tag = index
             submenu.addItem(child)
         }
 
@@ -155,9 +182,9 @@ final class FinderSync: FIFinderSync {
         let item = NSMenuItem(title: strings.favoriteDirectoriesTitle, action: nil, keyEquivalent: "")
         let submenu = NSMenu(title: strings.favoriteDirectoriesTitle)
 
-        for directory in store.loadFavoriteDirectories() {
+        for (index, directory) in store.loadFavoriteDirectories().enumerated() {
             let child = menuItem(directory.name, action: #selector(openFavoriteDirectory(_:)))
-            child.representedObject = directory.url
+            child.tag = index
             submenu.addItem(child)
         }
 
@@ -175,6 +202,22 @@ final class FinderSync: FIFinderSync {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
         return item
+    }
+
+    private func template(for tag: Int) -> NewFileTemplate? {
+        let templates = store.loadFileTemplates()
+        guard templates.indices.contains(tag) else {
+            return nil
+        }
+        return templates[tag]
+    }
+
+    private func favoriteDirectoryURL(for tag: Int) -> URL? {
+        let directories = store.loadFavoriteDirectories()
+        guard directories.indices.contains(tag) else {
+            return nil
+        }
+        return directories[tag].resolvedURL
     }
 
     private func monitoredDirectoryURLs() -> [URL] {

@@ -5,9 +5,21 @@ func makeAppConfigurationStoreTests() -> [TestCase] {
         TestCase(name: "AppConfigurationStore saves and loads favorite directories in order") {
             let fixture = UserDefaultsFixture()
             let store = AppConfigurationStore(suiteName: fixture.suiteName)
+            let bookmarkA = Data([0x01, 0x02])
+            let bookmarkB = Data([0x03, 0x04])
             let directories = [
-                FavoriteDirectory(id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!, name: "Work", path: "/tmp/work"),
-                FavoriteDirectory(id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!, name: "Desktop", path: "/tmp/desktop")
+                FavoriteDirectory(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+                    name: "Work",
+                    path: "/tmp/work",
+                    bookmarkData: bookmarkA
+                ),
+                FavoriteDirectory(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!,
+                    name: "Desktop",
+                    path: "/tmp/desktop",
+                    bookmarkData: bookmarkB
+                )
             ]
 
             store.saveFavoriteDirectories(directories)

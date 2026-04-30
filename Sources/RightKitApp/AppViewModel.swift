@@ -27,7 +27,16 @@ final class AppViewModel: ObservableObject {
 
     func addFavoriteDirectory(_ url: URL) {
         let resolvedURL = url.standardizedFileURL
-        let directory = FavoriteDirectory(name: resolvedURL.lastPathComponent, path: resolvedURL.path)
+        let bookmarkData = try? resolvedURL.bookmarkData(
+            options: [.withSecurityScope],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+        let directory = FavoriteDirectory(
+            name: resolvedURL.lastPathComponent,
+            path: resolvedURL.path,
+            bookmarkData: bookmarkData
+        )
 
         guard !favoriteDirectories.contains(where: { $0.path == directory.path }) else {
             statusMessage = strings.directoryAlreadyExists(directory.path)

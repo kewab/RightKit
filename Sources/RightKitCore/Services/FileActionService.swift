@@ -4,6 +4,7 @@ import Foundation
 final class FileActionService {
     private let fileManager: FileManager
     private let uniqueURLResolver: UniqueFileURLResolver
+    private let logger = RightKitLogger.fileActions
 
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
@@ -12,39 +13,48 @@ final class FileActionService {
 
     @discardableResult
     func createFile(named filename: String, from template: NewFileTemplate, in directory: URL) throws -> URL {
-        try validateDirectory(directory)
+        try SecurityScopedResourceAccess.withAccess(to: [directory]) {
+            try validateDirectory(directory)
 
-        let trimmedName = filename.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedName.isEmpty, !trimmedName.contains("/") else {
-            throw RightKitError.invalidFilename(filename)
+            let trimmedName = filename.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedName.isEmpty, !trimmedName.contains("/") else {
+                throw RightKitError.invalidFilename(filename)
+            }
+
+            let proposedURL = directory.appendingPathComponent(trimmedName)
+            let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
+            let data = Data(template.initialContent.utf8)
+            try data.write(to: targetURL, options: .withoutOverwriting)
+            logger.info("Created file at \(targetURL.path, privacy: .public)")
+            return targetURL
         }
-
-        let proposedURL = directory.appendingPathComponent(trimmedName)
-        let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
-        let data = Data(template.initialContent.utf8)
-        try data.write(to: targetURL, options: .withoutOverwriting)
-        return targetURL
     }
 
     func copyItems(at sourceURLs: [URL], to directory: URL) throws -> [URL] {
-        try validateDirectory(directory)
-        return try sourceURLs.map { sourceURL in
-            try validateSource(sourceURL)
-            let proposedURL = directory.appendingPathComponent(sourceURL.lastPathComponent)
-            let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
-            try fileManager.copyItem(at: sourceURL, to: targetURL)
-            return targetURL
+        try SecurityScopedResourceAccess.withAccess(to: sourceURLs + [directory]) {
+            try validateDirectory(directory)
+            return try sourceURLs.map { sourceURL in
+                try validateSource(sourceURL)
+                let proposedURL = directory.appendingPathComponent(sourceURL.lastPathComponent)
+                let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
+                try fileManager.copyItem(at: sourceURL, to: targetURL)
+                logger.info("Copied item from \(sourceURL.path, privacy: .public) to \(targetURL.path, privacy: .public)")
+                return targetURL
+            }
         }
     }
 
     func moveItems(at sourceURLs: [URL], to directory: URL) throws -> [URL] {
-        try validateDirectory(directory)
-        return try sourceURLs.map { sourceURL in
-            try validateSource(sourceURL)
-            let proposedURL = directory.appendingPathComponent(sourceURL.lastPathComponent)
-            let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
-            try fileManager.moveItem(at: sourceURL, to: targetURL)
-            return targetURL
+        try SecurityScopedResourceAccess.withAccess(to: sourceURLs + [directory]) {
+            try validateDirectory(directory)
+            return try sourceURLs.map { sourceURL in
+                try validateSource(sourceURL)
+                let proposedURL = directory.appendingPathComponent(sourceURL.lastPathComponent)
+                let targetURL = uniqueURLResolver.availableURL(for: proposedURL)
+                try fileManager.moveItem(at: sourceURL, to: targetURL)
+                logger.info("Moved item from \(sourceURL.path, privacy: .public) to \(targetURL.path, privacy: .public)")
+                return targetURL
+            }
         }
     }
 
@@ -55,6 +65,7 @@ final class FileActionService {
         if !didWrite {
             throw RightKitError.pasteboardWriteFailed
         }
+        logger.info("Copied \(urls.count) path(s) to pasteboard")
     }
 
     func urls(from state: CutPasteState?) throws -> [URL] {
