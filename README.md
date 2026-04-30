@@ -42,4 +42,40 @@ The Finder extension source lives in:
 Sources/RightKitFinderExt
 ```
 
-When the Xcode project is created, add a Finder Sync Extension target and include the shared `RightKitCore` files.
+## Generate Xcode Project
+
+The repository now includes an `xcodegen` spec for the host app:
+
+```bash
+brew install xcodegen
+chmod +x Scripts/generate_xcodeproj.sh
+Scripts/generate_xcodeproj.sh
+open RightKit.xcodeproj
+```
+
+This creates a runnable macOS app target named `RightKitApp`.
+
+## Full Xcode Environment
+
+To move from Command Line Tools to a full Xcode setup:
+
+```bash
+brew install xcodes
+xcodes install --latest
+sudo xcode-select -s /Applications/Xcode.app
+sudo xcodebuild -runFirstLaunch
+```
+
+`xcodes install --latest` requires an Apple ID sign-in to download Xcode from Apple.
+
+## Finder Extension
+
+The Finder extension source and config live in:
+
+```text
+Sources/RightKitFinderExt
+Config/RightKitFinderExt.Info.plist
+Config/RightKitFinderExt.entitlements
+```
+
+The default generated project keeps the extension out of the initial run path so the host app can launch without Apple Developer signing. Add the Finder Sync Extension target in Xcode after full Xcode installation and team signing are available.

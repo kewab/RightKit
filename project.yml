@@ -1,0 +1,30 @@
+name: RightKit
+options:
+  createIntermediateGroups: true
+  deploymentTarget:
+    macOS: "13.0"
+settings:
+  base:
+    PRODUCT_NAME: RightKit
+    PRODUCT_BUNDLE_IDENTIFIER: com.deacyn.RightKit
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
+    SWIFT_VERSION: 5.0
+targets:
+  RightKitApp:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/RightKitCore
+      - path: Sources/RightKitApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.deacyn.RightKit
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Config/RightKitApp.Info.plist
+        CODE_SIGNING_ALLOWED: NO
+        CODE_SIGNING_REQUIRED: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        DEVELOPMENT_TEAM: ""
+    scheme:
+      testTargets: []
