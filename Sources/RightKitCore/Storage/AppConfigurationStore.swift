@@ -4,8 +4,13 @@ final class AppConfigurationStore {
     private enum Key {
         static let favoriteDirectories = "favoriteDirectories"
         static let fileTemplates = "fileTemplates"
+        static let enabledTemplateExtensions = "enabledTemplateExtensions"
         static let cutPasteState = "cutPasteState"
         static let language = "language"
+        static let showMenuIcons = "showMenuIcons"
+        static let favoriteDirectoriesEnabled = "favoriteDirectoriesEnabled"
+        static let openNewFileAfterCreate = "openNewFileAfterCreate"
+        static let playSoundAfterCreate = "playSoundAfterCreate"
     }
 
     private let defaults: UserDefaults
@@ -36,6 +41,19 @@ final class AppConfigurationStore {
         save(templates, forKey: Key.fileTemplates)
     }
 
+    func loadEnabledTemplateExtensions(availableTemplates: [NewFileTemplate]? = nil) -> Set<String> {
+        let fallbackTemplates = availableTemplates ?? loadFileTemplates()
+        let fallbackExtensions = Set(fallbackTemplates.map(\.fileExtension))
+        guard let storedExtensions = load([String].self, forKey: Key.enabledTemplateExtensions) else {
+            return fallbackExtensions
+        }
+        return Set(storedExtensions)
+    }
+
+    func saveEnabledTemplateExtensions(_ extensions: Set<String>) {
+        save(Array(extensions).sorted(), forKey: Key.enabledTemplateExtensions)
+    }
+
     func loadCutPasteState() -> CutPasteState? {
         load(CutPasteState.self, forKey: Key.cutPasteState)
     }
@@ -60,6 +78,38 @@ final class AppConfigurationStore {
         defaults.set(language.rawValue, forKey: Key.language)
     }
 
+    func loadShowMenuIcons() -> Bool {
+        loadBool(forKey: Key.showMenuIcons, defaultValue: true)
+    }
+
+    func saveShowMenuIcons(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: Key.showMenuIcons)
+    }
+
+    func loadFavoriteDirectoriesEnabled() -> Bool {
+        loadBool(forKey: Key.favoriteDirectoriesEnabled, defaultValue: true)
+    }
+
+    func saveFavoriteDirectoriesEnabled(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: Key.favoriteDirectoriesEnabled)
+    }
+
+    func loadOpenNewFileAfterCreate() -> Bool {
+        loadBool(forKey: Key.openNewFileAfterCreate, defaultValue: false)
+    }
+
+    func saveOpenNewFileAfterCreate(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: Key.openNewFileAfterCreate)
+    }
+
+    func loadPlaySoundAfterCreate() -> Bool {
+        loadBool(forKey: Key.playSoundAfterCreate, defaultValue: false)
+    }
+
+    func savePlaySoundAfterCreate(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: Key.playSoundAfterCreate)
+    }
+
     private func load<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {
         guard let data = defaults.data(forKey: key) else {
             return nil
@@ -72,5 +122,12 @@ final class AppConfigurationStore {
             return
         }
         defaults.set(data, forKey: key)
+    }
+
+    private func loadBool(forKey key: String, defaultValue: Bool) -> Bool {
+        guard defaults.object(forKey: key) != nil else {
+            return defaultValue
+        }
+        return defaults.bool(forKey: key)
     }
 }

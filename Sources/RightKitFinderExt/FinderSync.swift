@@ -19,14 +19,12 @@ final class FinderSync: FIFinderSync {
         let menu = NSMenu(title: "RightKit")
 
         addNewFileMenu(strings: strings, to: menu)
+        menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath), icon: "link.circle"))
         menu.addItem(NSMenuItem.separator())
-
         addDestinationMenu(title: strings.copyTo, action: #selector(copyToFavorite(_:)), strings: strings, to: menu)
         addDestinationMenu(title: strings.moveTo, action: #selector(moveToFavorite(_:)), strings: strings, to: menu)
         addFavoriteDirectoryMenu(strings: strings, to: menu)
-
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath)))
         menu.addItem(menuItem(strings.cut, action: #selector(cutSelection)))
         menu.addItem(menuItem(strings.paste, action: #selector(pasteCutItems)))
 
@@ -138,12 +136,21 @@ final class FinderSync: FIFinderSync {
     }
 
     private func addNewFileMenu(strings: RightKitStrings, to menu: NSMenu) {
-        let item = NSMenuItem(title: strings.newFile, action: nil, keyEquivalent: "")
+        let item = menuItem(strings.newFile, action: nil, icon: "doc.badge.plus")
         let submenu = NSMenu(title: strings.newFile)
         let templates = store.loadFileTemplates()
+        let enabledExtensions = store.loadEnabledTemplateExtensions(availableTemplates: templates)
 
         for (index, template) in templates.enumerated() {
-            let child = menuItem(strings.templateTitle(for: template), action: #selector(newFile(_:)))
+            guard enabledExtensions.contains(template.fileExtension) else {
+                continue
+            }
+
+            let child = menuItem(
+                strings.templateTitle(for: template),
+                action: #selector(newFile(_:)),
+                icon: RightKitIconProvider.templateIcon(for: template)
+            )
             child.tag = index
             submenu.addItem(child)
         }
@@ -159,11 +166,16 @@ final class FinderSync: FIFinderSync {
     }
 
     private func addDestinationMenu(title: String, action: Selector, strings: RightKitStrings, to menu: NSMenu) {
-        let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+        let symbolName = title == strings.copyTo ? "tray.and.arrow.down.fill" : "folder.fill.badge.minus"
+        let item = menuItem(title, action: nil, icon: symbolName)
         let submenu = NSMenu(title: title)
 
         for (index, directory) in store.loadFavoriteDirectories().enumerated() {
-            let child = menuItem(directory.name, action: action)
+            let child = menuItem(
+                directory.name,
+                action: action,
+                icon: RightKitIconProvider.directoryIcon(for: directory.url)
+            )
             child.tag = index
             submenu.addItem(child)
         }
@@ -179,11 +191,15 @@ final class FinderSync: FIFinderSync {
     }
 
     private func addFavoriteDirectoryMenu(strings: RightKitStrings, to menu: NSMenu) {
-        let item = NSMenuItem(title: strings.favoriteDirectoriesTitle, action: nil, keyEquivalent: "")
+        let item = menuItem(strings.favoriteDirectoriesTitle, action: nil, icon: "heart.circle")
         let submenu = NSMenu(title: strings.favoriteDirectoriesTitle)
 
         for (index, directory) in store.loadFavoriteDirectories().enumerated() {
-            let child = menuItem(directory.name, action: #selector(openFavoriteDirectory(_:)))
+            let child = menuItem(
+                directory.name,
+                action: #selector(openFavoriteDirectory(_:)),
+                icon: RightKitIconProvider.directoryIcon(for: directory.url)
+            )
             child.tag = index
             submenu.addItem(child)
         }
@@ -198,9 +214,21 @@ final class FinderSync: FIFinderSync {
         menu.addItem(item)
     }
 
-    private func menuItem(_ title: String, action: Selector) -> NSMenuItem {
+    private func menuItem(_ title: String, action: Selector?, icon: String? = nil) -> NSMenuItem {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
+        if store.loadShowMenuIcons(), let icon {
+            item.image = RightKitIconProvider.symbol(icon)
+        }
+        return item
+    }
+
+    private func menuItem(_ title: String, action: Selector?, icon: NSImage?) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
+        item.target = self
+        if store.loadShowMenuIcons() {
+            item.image = icon
+        }
         return item
     }
 

@@ -12,9 +12,11 @@
 		163215D12D3CF09851327D59 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E94C23A1FD113FAA102644 /* ContentView.swift */; };
 		1C1637BC54F31F6C49E1C1FF /* CutPasteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21774273A31AB93B8F0E152 /* CutPasteState.swift */; };
 		1C9023561E518D74926BBA0A /* NewFileTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4D15F9FD072C4C293307B /* NewFileTemplate.swift */; };
+		24452C4CA8B5141B9D7FB86A /* RightKitIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E752E6B22C80D585628375F /* RightKitIconProvider.swift */; };
 		2DE7B16B8DDAD1C0075FD71C /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EDDD6C80023969E4B89527 /* StatusView.swift */; };
 		3315E2F234D8561801D18F6E /* SecurityScopedResourceAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1834577AA0EEFA8E118FC5 /* SecurityScopedResourceAccess.swift */; };
 		39151C03ECFC261EDF97A20A /* AppConfigurationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2571F72FF4C8640D0BD1BC47 /* AppConfigurationStore.swift */; };
+		3CC37A8AF6000C2859D33E4F /* RightKitIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E752E6B22C80D585628375F /* RightKitIconProvider.swift */; };
 		404460B71B7639BBE2E50F6C /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */; };
 		48A3FCEF629C520CDE0BC30E /* FileTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */; };
 		4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */; };
@@ -79,6 +81,7 @@
 		6C6B9765C832FE40C8FD81EE /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitApp.swift; sourceTree = "<group>"; };
 		9587A59BDB98FDEC616A2D83 /* RightKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitError.swift; sourceTree = "<group>"; };
+		9E752E6B22C80D585628375F /* RightKitIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitIconProvider.swift; sourceTree = "<group>"; };
 		A21774273A31AB93B8F0E152 /* CutPasteState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutPasteState.swift; sourceTree = "<group>"; };
 		A3E94C23A1FD113FAA102644 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AB1834577AA0EEFA8E118FC5 /* SecurityScopedResourceAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedResourceAccess.swift; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		180DDCDE72A3A7A19F3CF497 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				9E752E6B22C80D585628375F /* RightKitIconProvider.swift */,
 				F53B6AF2586CC554B165CAA1 /* RightKitLogger.swift */,
 				AB1834577AA0EEFA8E118FC5 /* SecurityScopedResourceAccess.swift */,
 			);
@@ -316,6 +320,7 @@
 				780677E3EAAA16079670921F /* FinderSync.swift in Sources */,
 				59F7CDEDC728CAE66516280D /* NewFileTemplate.swift in Sources */,
 				E89C470DD9FD677FFC564681 /* RightKitError.swift in Sources */,
+				3CC37A8AF6000C2859D33E4F /* RightKitIconProvider.swift in Sources */,
 				872D372BF175DBA7CCFB9634 /* RightKitLogger.swift in Sources */,
 				5B42BB36A6514EFB01492179 /* RightKitStrings.swift in Sources */,
 				BCD582801BF779F146076249 /* SecurityScopedResourceAccess.swift in Sources */,
@@ -340,6 +345,7 @@
 				1C9023561E518D74926BBA0A /* NewFileTemplate.swift in Sources */,
 				8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */,
 				9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */,
+				24452C4CA8B5141B9D7FB86A /* RightKitIconProvider.swift in Sources */,
 				799E87AC0C7C81C69DCF2B0D /* RightKitLogger.swift in Sources */,
 				0A2222B062D925FD1A945A18 /* RightKitStrings.swift in Sources */,
 				3315E2F234D8561801D18F6E /* SecurityScopedResourceAccess.swift in Sources */,

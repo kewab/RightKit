@@ -26,8 +26,22 @@ struct RightKitStrings {
 
     var statusTab: String {
         switch language {
-        case .chinese: return "状态"
-        case .english: return "Status"
+        case .chinese: return "通用设置"
+        case .english: return "General"
+        }
+    }
+
+    var generalSettingsTitle: String {
+        switch language {
+        case .chinese: return "通用设置"
+        case .english: return "General Settings"
+        }
+    }
+
+    var generalSettingsSubtitle: String {
+        switch language {
+        case .chinese: return "控制菜单显示、触发方式和基础权限引导。"
+        case .english: return "Control menu visibility, trigger methods, and permission guidance."
         }
     }
 
@@ -40,8 +54,15 @@ struct RightKitStrings {
 
     var favoriteDirectoriesSubtitle: String {
         switch language {
-        case .chinese: return "这些目录会出现在复制到和移动到菜单里。"
-        case .english: return "These destinations will appear in Copy To and Move To menus."
+        case .chinese: return "这些目录会出现在复制到、移动到和常用目录菜单里。"
+        case .english: return "These destinations appear in Copy To, Move To, and Favorites menus."
+        }
+    }
+
+    var favoriteDirectoriesEmptyHint: String {
+        switch language {
+        case .chinese: return "点击左下角 + 添加一个目录。"
+        case .english: return "Click the + button below to add a directory."
         }
     }
 
@@ -75,8 +96,183 @@ struct RightKitStrings {
 
     var templatesSubtitle: String {
         switch language {
-        case .chinese: return "第一版先提供固定的轻量模板。"
-        case .english: return "The first version ships with a fixed minimal template set."
+        case .chinese: return "管理右键“新建文件”菜单中显示的模板。"
+        case .english: return "Manage templates shown in the New File context menu."
+        }
+    }
+
+    var launchAndDisplayTitle: String {
+        switch language {
+        case .chinese: return "启动与显示"
+        case .english: return "Launch & Display"
+        }
+    }
+
+    var triggerMethodsTitle: String {
+        switch language {
+        case .chinese: return "触发方式"
+        case .english: return "Trigger Methods"
+        }
+    }
+
+    var permissionsTitle: String {
+        switch language {
+        case .chinese: return "权限"
+        case .english: return "Permissions"
+        }
+    }
+
+    var permissionsDescription: String {
+        switch language {
+        case .chinese: return "部分功能无法使用时，您可以授予完全磁盘访问权限来解决。"
+        case .english: return "If some actions fail, granting Full Disk Access can help resolve permission issues."
+        }
+    }
+
+    var watchPermissionGuide: String {
+        switch language {
+        case .chinese: return "观看权限设置教学 >>"
+        case .english: return "Watch Permission Guide >>"
+        }
+    }
+
+    var permissionSetupGuide: String {
+        switch language {
+        case .chinese: return "权限设置引导 >>"
+        case .english: return "Permission Setup Guide >>"
+        }
+    }
+
+    var triggerMethodOne: String {
+        switch language {
+        case .chinese: return "按住修饰键 鼠标右键点击"
+        case .english: return "Hold a modifier key and right-click"
+        }
+    }
+
+    var triggerMethodTwo: String {
+        switch language {
+        case .chinese: return "鼠标中键点击"
+        case .english: return "Middle mouse button click"
+        }
+    }
+
+    var triggerMethodThree: String {
+        switch language {
+        case .chinese: return "触控板上三指轻点 / 三指点按"
+        case .english: return "Three-finger tap / click on trackpad"
+        }
+    }
+
+    var viewHowToUse: String {
+        switch language {
+        case .chinese: return "查看使用方法 >>"
+        case .english: return "View How To Use >>"
+        }
+    }
+
+    var showMenuBarIcon: String {
+        switch language {
+        case .chinese: return "显示菜单栏图标"
+        case .english: return "Show menu bar icon"
+        }
+    }
+
+    var scopeLabel: String {
+        switch language {
+        case .chinese: return "使用范围:"
+        case .english: return "Scope:"
+        }
+    }
+
+    var systemDiskScope: String {
+        switch language {
+        case .chinese: return "系统磁盘"
+        case .english: return "System Disk"
+        }
+    }
+
+    var iconColumnTitle: String {
+        switch language {
+        case .chinese: return "图标"
+        case .english: return "Icon"
+        }
+    }
+
+    var realPathColumnTitle: String {
+        switch language {
+        case .chinese: return "真实路径"
+        case .english: return "Real Path"
+        }
+    }
+
+    var displayNameColumnTitle: String {
+        switch language {
+        case .chinese: return "显示名称（双击编辑/按住拖拽）"
+        case .english: return "Display Name"
+        }
+    }
+
+    var enabledColumnTitle: String {
+        switch language {
+        case .chinese: return "启用"
+        case .english: return "Enabled"
+        }
+    }
+
+    var suffixColumnTitle: String {
+        switch language {
+        case .chinese: return "后缀"
+        case .english: return "Suffix"
+        }
+    }
+
+    var mainMenuColumnTitle: String {
+        switch language {
+        case .chinese: return "主菜单"
+        case .english: return "Main Menu"
+        }
+    }
+
+    var showIcons: String {
+        switch language {
+        case .chinese: return "显示图标"
+        case .english: return "Show Icons"
+        }
+    }
+
+    var enableFavoriteDirectories: String {
+        switch language {
+        case .chinese: return "启用常用目录"
+        case .english: return "Enable Favorite Directories"
+        }
+    }
+
+    var openFileAfterCreate: String {
+        switch language {
+        case .chinese: return "新建文件后自动打开"
+        case .english: return "Open new file after creation"
+        }
+    }
+
+    var playPromptSound: String {
+        switch language {
+        case .chinese: return "开启提示音"
+        case .english: return "Play prompt sound"
+        }
+    }
+
+    var addTemplateFile: String {
+        switch language {
+        case .chinese: return "添加模板文件"
+        case .english: return "Add Template File"
+        }
+    }
+
+    var finderMenuTroubleshooting: String {
+        switch language {
+        case .chinese: return "右键菜单失效的解决方法 >>"
+        case .english: return "Fix Missing Finder Menu >>"
         }
     }
 
