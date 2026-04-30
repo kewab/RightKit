@@ -1,8 +1,10 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # RightKit
 
-RightKit is a native macOS Finder context menu utility.
+RightKit is a native macOS Finder context menu utility built for fast, predictable file operations.
 
-The first version focuses on:
+## MVP Features
 
 - New File
 - Copy To
@@ -11,119 +13,95 @@ The first version focuses on:
 - Copy Path
 - Cut / Paste
 
-## Current State
+## Tech Stack
 
-This repository currently contains:
+- `Swift`
+- `SwiftUI`
+- `AppKit`
+- `Finder Sync Extension`
+- `App Group` + `UserDefaults`
+- `FileManager`
+- `XcodeGen`
 
-- a runnable SwiftUI host app
-- shared core models, storage, and file action services
-- a Finder Sync Extension target definition for the Xcode project
-- shared Chinese/English language settings, defaulting to Chinese
+## Project Structure
 
-The local machine currently has Command Line Tools but not a full Xcode installation, so the temporary scripts compile the host app with `swiftc`.
+- `RightKitApp`: host app, settings, onboarding, shared configuration management
+- `RightKitFinderExt`: Finder context menu integration
+- `Sources/RightKitCore`: shared models, storage, localization, and file actions
 
-## Run Host App
+## Requirements
+
+- macOS 13+
+- Xcode
+- `xcodegen` if you need to regenerate the project
+
+## Getting Started
+
+### 1. Generate the Xcode project
+
+```bash
+brew install xcodegen
+chmod +x Scripts/generate_xcodeproj.sh
+Scripts/generate_xcodeproj.sh
+```
+
+### 2. Open the project
+
+```bash
+open RightKit.xcodeproj
+```
+
+### 3. Build and run the app
+
+Run the `RightKitApp` scheme from Xcode.
+
+### 4. Enable the Finder extension
+
+After the app launches once, enable `RightKit` in:
+
+`System Settings > Extensions > Finder Extensions`
+
+If Finder does not pick up the extension immediately, relaunch Finder.
+
+## Command Line Helpers
+
+### Run the host app only
 
 ```bash
 chmod +x Scripts/build_app.sh Scripts/run_app.sh
 Scripts/run_app.sh
 ```
 
-The generated app bundle is placed at:
+This path builds the SwiftUI host app with `swiftc` and outputs:
 
 ```text
 .build/local/RightKit.app
 ```
 
-## Run Tests
+It is useful for host app iteration, but Finder extension development and verification should be done through Xcode.
 
-Core regression tests live under:
-
-```text
-Tests/RightKitCoreTests
-```
-
-Run them with:
+### Run tests
 
 ```bash
 chmod +x Scripts/test.sh
 Scripts/test.sh
 ```
 
-For this repository, every code change should end by running `Scripts/test.sh`.
-
-The script does not require a full Xcode installation. It compiles `Sources/RightKitCore` together with the test runner using `swiftc`, which makes it usable on machines that only have Command Line Tools installed.
-
-## Finder Extension
-
-The Finder extension source lives in:
+Core regression tests live in:
 
 ```text
-Sources/RightKitFinderExt
+Tests/RightKitCoreTests
 ```
 
-The extension source currently wires the MVP actions:
+## Finder Extension Notes
 
-- New File
-- Copy To
-- Move To
-- Favorite Directories
-- Copy Path
-- Cut
-- Paste
+- The extension source lives in `Sources/RightKitFinderExt`
+- Extension configuration lives in `Config/RightKitFinderExt.Info.plist` and `Config/RightKitFinderExt.entitlements`
+- Shared configuration is stored through the configured App Group
+- The app and extension both support Chinese and English, with Chinese as the default UI language
 
-## Generate Xcode Project
+## Development Notes
 
-The repository now includes an `xcodegen` spec for the host app and Finder extension:
-
-```bash
-brew install xcodegen
-chmod +x Scripts/generate_xcodeproj.sh
-Scripts/generate_xcodeproj.sh
-open RightKit.xcodeproj
-```
-
-This creates:
-
-- `RightKitApp`
-- `RightKitFinderExt`
-
-## Full Xcode Environment
-
-To move from Command Line Tools to a full Xcode setup:
-
-```bash
-brew install xcodes
-xcodes install --latest
-sudo xcode-select -s /Applications/Xcode.app
-sudo xcodebuild -runFirstLaunch
-```
-
-`xcodes install --latest` requires an Apple ID sign-in to download Xcode from Apple.
-
-## Finder Extension
-
-The Finder extension source and config live in:
-
-```text
-Sources/RightKitFinderExt
-Config/RightKitFinderExt.Info.plist
-Config/RightKitFinderExt.entitlements
-```
-
-The generated project embeds `RightKitFinderExt` into `RightKitApp`. To make the Finder context menu appear, you still need to:
-
-1. install full Xcode
-2. set the same Signing Team on both targets
-3. run `RightKitApp` once
-4. enable `RightKit` under Finder Extensions in System Settings
-
-## Language
-
-RightKit stores the active language in shared configuration so the host app and Finder extension can render the same language.
-
-Default:
-
-```text
-中文
-```
+- Keep Finder extension code thin and move reusable logic into `RightKitCore`
+- Prioritize reliability over feature breadth
+- Avoid expanding beyond the MVP unless explicitly approved
