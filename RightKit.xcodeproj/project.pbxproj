@@ -18,19 +18,56 @@
 		48A3FCEF629C520CDE0BC30E /* FileTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */; };
 		4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */; };
 		574773CE9F398BDC661E4189 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */; };
+		5969C352E4A3805EA31F24D9 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */; };
+		59F7CDEDC728CAE66516280D /* NewFileTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4D15F9FD072C4C293307B /* NewFileTemplate.swift */; };
+		5B42BB36A6514EFB01492179 /* RightKitStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C220231D9659B5A17638C91A /* RightKitStrings.swift */; };
+		61903813F5266E52D29D9BD6 /* UniqueFileURLResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6380250E4909A00DA8855D1 /* UniqueFileURLResolver.swift */; };
+		6E5CEF47DCCFBDDBB9ECAA44 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */; };
+		780677E3EAAA16079670921F /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6566E60E1F21A1197C3C1D8 /* FinderSync.swift */; };
+		7B1AFC095C7B2DD7CC9F75E5 /* FileActionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF36E322D1A24B33C2809CD /* FileActionService.swift */; };
 		7F6618F8F5AE1583C3FED3FB /* FavoriteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */; };
+		88D0F99DDF9BA759887AA92A /* AppConfigurationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2571F72FF4C8640D0BD1BC47 /* AppConfigurationStore.swift */; };
 		8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */; };
+		8EEAD474C4A0EE0F22F66576 /* CutPasteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21774273A31AB93B8F0E152 /* CutPasteState.swift */; };
 		9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587A59BDB98FDEC616A2D83 /* RightKitError.swift */; };
+		A88E5A7EAF3880064C68E956 /* FavoriteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */; };
+		B5AAA91AFF36B592554C987B /* RightKitFinderExt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B8CA6811F0A713F2CBA910DC /* UniqueFileURLResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6380250E4909A00DA8855D1 /* UniqueFileURLResolver.swift */; };
 		CE1F5F820CB6A25BBAD5C792 /* FileActionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF36E322D1A24B33C2809CD /* FileActionService.swift */; };
+		E89C470DD9FD677FFC564681 /* RightKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587A59BDB98FDEC616A2D83 /* RightKitError.swift */; };
 		F5B60E76D99A85AE86851577 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B9765C832FE40C8FD81EE /* AppViewModel.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCDC10D74087EB3B7C5459FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1A017A445166C50822AFEAC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB6875C71D0251CE5F225CE8;
+			remoteInfo = RightKitFinderExt;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		802486937C4FDAA825E1F473 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B5AAA91AFF36B592554C987B /* RightKitFinderExt.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		07EDDD6C80023969E4B89527 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		0FCC2CA924421EE152D26249 /* RightKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
+		2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightKitFinderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2571F72FF4C8640D0BD1BC47 /* AppConfigurationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationStore.swift; sourceTree = "<group>"; };
 		26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDirectory.swift; sourceTree = "<group>"; };
 		34F9E7742539559D214A58EC /* FavoriteDirectoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDirectoriesView.swift; sourceTree = "<group>"; };
@@ -45,6 +82,7 @@
 		C220231D9659B5A17638C91A /* RightKitStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitStrings.swift; sourceTree = "<group>"; };
 		DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTemplatesView.swift; sourceTree = "<group>"; };
+		F6566E60E1F21A1197C3C1D8 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -73,6 +111,7 @@
 			children = (
 				DC8723E8274A2E162BAE829E /* RightKitApp */,
 				100B12CCD642DFA1FC25E652 /* RightKitCore */,
+				F0B69E31E67605292D364134 /* RightKitFinderExt */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -110,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				0FCC2CA924421EE152D26249 /* RightKitApp.app */,
+				2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,6 +184,14 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
+		F0B69E31E67605292D364134 /* RightKitFinderExt */ = {
+			isa = PBXGroup;
+			children = (
+				F6566E60E1F21A1197C3C1D8 /* FinderSync.swift */,
+			);
+			path = RightKitFinderExt;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -152,10 +200,12 @@
 			buildConfigurationList = 071FA341E9663A22D0ACE610 /* Build configuration list for PBXNativeTarget "RightKitApp" */;
 			buildPhases = (
 				B77376716AC5FA13C76F72B3 /* Sources */,
+				802486937C4FDAA825E1F473 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				50EE01828B5BC17B374E9083 /* PBXTargetDependency */,
 			);
 			name = RightKitApp;
 			packageProductDependencies = (
@@ -163,6 +213,23 @@
 			productName = RightKitApp;
 			productReference = 0FCC2CA924421EE152D26249 /* RightKitApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		EB6875C71D0251CE5F225CE8 /* RightKitFinderExt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6B7210A59F0A562DF2C4582 /* Build configuration list for PBXNativeTarget "RightKitFinderExt" */;
+			buildPhases = (
+				20D07F3514E7149ABABEFACC /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RightKitFinderExt;
+			packageProductDependencies = (
+			);
+			productName = RightKitFinderExt;
+			productReference = 2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -174,7 +241,28 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					1DD7772CB4ECBB005E27463B = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = HRN84R5P2A;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+					EB6875C71D0251CE5F225CE8 = {
+						DevelopmentTeam = HRN84R5P2A;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -193,11 +281,30 @@
 			projectRoot = "";
 			targets = (
 				1DD7772CB4ECBB005E27463B /* RightKitApp */,
+				EB6875C71D0251CE5F225CE8 /* RightKitFinderExt */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20D07F3514E7149ABABEFACC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88D0F99DDF9BA759887AA92A /* AppConfigurationStore.swift in Sources */,
+				6E5CEF47DCCFBDDBB9ECAA44 /* AppGroup.swift in Sources */,
+				5969C352E4A3805EA31F24D9 /* AppLanguage.swift in Sources */,
+				8EEAD474C4A0EE0F22F66576 /* CutPasteState.swift in Sources */,
+				A88E5A7EAF3880064C68E956 /* FavoriteDirectory.swift in Sources */,
+				7B1AFC095C7B2DD7CC9F75E5 /* FileActionService.swift in Sources */,
+				780677E3EAAA16079670921F /* FinderSync.swift in Sources */,
+				59F7CDEDC728CAE66516280D /* NewFileTemplate.swift in Sources */,
+				E89C470DD9FD677FFC564681 /* RightKitError.swift in Sources */,
+				5B42BB36A6514EFB01492179 /* RightKitStrings.swift in Sources */,
+				61903813F5266E52D29D9BD6 /* UniqueFileURLResolver.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B77376716AC5FA13C76F72B3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,16 +331,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		50EE01828B5BC17B374E9083 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB6875C71D0251CE5F225CE8 /* RightKitFinderExt */;
+			targetProxy = BCDC10D74087EB3B7C5459FD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		6ED121395987FCF11DCB43DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/RightKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = HRN84R5P2A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Config/RightKitApp.Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -241,9 +355,33 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit;
+				PRODUCT_MODULE_NAME = RightKitApp;
+				PRODUCT_NAME = RightKit;
 				SDKROOT = macosx;
 			};
 			name = Debug;
+		};
+		6FE2F902F07512CB56E1202E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/RightKitFinderExt.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HRN84R5P2A;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/RightKitFinderExt.Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit.FinderExt;
+				PRODUCT_MODULE_NAME = RightKitFinderExt;
+				PRODUCT_NAME = RightKitFinderExt;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		780BE3ADEE023BC04CD5C88F /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -281,6 +419,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HRN84R5P2A;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -296,7 +435,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit;
-				PRODUCT_NAME = RightKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -308,11 +447,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/RightKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = HRN84R5P2A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Config/RightKitApp.Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -320,9 +458,33 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit;
+				PRODUCT_MODULE_NAME = RightKitApp;
+				PRODUCT_NAME = RightKit;
 				SDKROOT = macosx;
 			};
 			name = Release;
+		};
+		AA1E222D8DB60C2893ADF14C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/RightKitFinderExt.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HRN84R5P2A;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/RightKitFinderExt.Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit.FinderExt;
+				PRODUCT_MODULE_NAME = RightKitFinderExt;
+				PRODUCT_NAME = RightKitFinderExt;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 		BEC90E3C81365BA414F8D12F /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -360,6 +522,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HRN84R5P2A;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -382,7 +545,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.deacyn.RightKit;
-				PRODUCT_NAME = RightKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -407,6 +570,15 @@
 			buildConfigurations = (
 				BEC90E3C81365BA414F8D12F /* Debug */,
 				780BE3ADEE023BC04CD5C88F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A6B7210A59F0A562DF2C4582 /* Build configuration list for PBXNativeTarget "RightKitFinderExt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA1E222D8DB60C2893ADF14C /* Debug */,
+				6FE2F902F07512CB56E1202E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

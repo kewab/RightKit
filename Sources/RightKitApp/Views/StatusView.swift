@@ -15,6 +15,8 @@ struct StatusView: View {
             InfoRow(label: viewModel.strings.fileTemplatesCount, value: "\(viewModel.fileTemplates.count)")
             InfoRow(label: viewModel.strings.cutItemsCount, value: "\(viewModel.cutPasteState?.sourcePaths.count ?? 0)")
 
+            ExtensionSetupView(viewModel: viewModel)
+
             Picker(viewModel.strings.languageLabel, selection: Binding(
                 get: { viewModel.language },
                 set: { viewModel.setLanguage($0) }
@@ -45,5 +47,39 @@ struct StatusView: View {
             Spacer()
         }
         .padding(24)
+    }
+}
+
+private struct ExtensionSetupView: View {
+    @ObservedObject var viewModel: AppViewModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HeaderView(
+                title: viewModel.strings.finderExtensionSetupTitle,
+                subtitle: viewModel.strings.finderExtensionSetupSubtitle
+            )
+
+            Text(viewModel.strings.finderExtensionSetupStep1)
+            Text(viewModel.strings.finderExtensionSetupStep2)
+            Text(viewModel.strings.finderExtensionSetupStep3)
+            Text(viewModel.strings.finderExtensionSetupStep4)
+
+            HStack {
+                Button {
+                    viewModel.copyFinderActivationCommand()
+                } label: {
+                    Label(viewModel.strings.copyFinderActivationCommand, systemImage: "terminal")
+                }
+
+                Spacer()
+            }
+
+            Text(viewModel.strings.finderExtensionSetupFootnote)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .background(.quaternary.opacity(0.25), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }

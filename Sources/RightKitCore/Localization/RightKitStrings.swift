@@ -206,6 +206,69 @@ struct RightKitStrings {
         }
     }
 
+    var finderExtensionSetupTitle: String {
+        switch language {
+        case .chinese: return "Finder 扩展启用"
+        case .english: return "Finder Extension Setup"
+        }
+    }
+
+    var finderExtensionSetupSubtitle: String {
+        switch language {
+        case .chinese: return "右键菜单不出现，通常是 Finder 扩展目标没有签名、嵌入或启用。"
+        case .english: return "If the context menu is missing, the Finder extension target is usually not signed, embedded, or enabled."
+        }
+    }
+
+    var finderExtensionSetupStep1: String {
+        switch language {
+        case .chinese: return "1. 用完整 Xcode 打开项目，并为 RightKitApp 与 RightKitFinderExt 选择同一个 Signing Team。"
+        case .english: return "1. Open the project in full Xcode and choose the same Signing Team for RightKitApp and RightKitFinderExt."
+        }
+    }
+
+    var finderExtensionSetupStep2: String {
+        switch language {
+        case .chinese: return "2. 确认两个目标都保留 App Group: group.com.deacyn.RightKit。"
+        case .english: return "2. Confirm both targets keep the App Group: group.com.deacyn.RightKit."
+        }
+    }
+
+    var finderExtensionSetupStep3: String {
+        switch language {
+        case .chinese: return "3. 运行 RightKitApp 一次，让宿主 App 安装并嵌入 Finder 扩展。"
+        case .english: return "3. Run RightKitApp once so the host app installs and embeds the Finder extension."
+        }
+    }
+
+    var finderExtensionSetupStep4: String {
+        switch language {
+        case .chinese: return "4. 到 系统设置 > 隐私与安全性 > 扩展 > Finder 扩展，启用 RightKit；如仍未显示，再重启 Finder。"
+        case .english: return "4. In System Settings > Privacy & Security > Extensions > Finder Extensions, enable RightKit; restart Finder if it still does not appear."
+        }
+    }
+
+    var copyFinderActivationCommand: String {
+        switch language {
+        case .chinese: return "复制 Finder 启用命令"
+        case .english: return "Copy Finder Activation Command"
+        }
+    }
+
+    var finderExtensionSetupFootnote: String {
+        switch language {
+        case .chinese: return "当前工程已经包含 Finder 扩展目标，但完整构建和启用仍依赖本机已安装完整 Xcode。"
+        case .english: return "The project now includes the Finder extension target, but full build and activation still require a complete local Xcode installation."
+        }
+    }
+
+    var finderActivationCommandCopied: String {
+        switch language {
+        case .chinese: return "Finder 扩展启用命令已复制到剪贴板"
+        case .english: return "Finder extension activation command copied to the clipboard"
+        }
+    }
+
     func templateTitle(for template: NewFileTemplate) -> String {
         switch (language, template.fileExtension) {
         case (.chinese, "txt"): return "文本文件"

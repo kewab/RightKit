@@ -1,5 +1,6 @@
 #if canImport(FinderSync)
 import AppKit
+import Darwin
 import FinderSync
 import Foundation
 
@@ -9,7 +10,7 @@ final class FinderSync: FIFinderSync {
 
     override init() {
         super.init()
-        FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: NSHomeDirectory())]
+        FIFinderSyncController.default().directoryURLs = Set(monitoredDirectoryURLs())
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
@@ -174,6 +175,16 @@ final class FinderSync: FIFinderSync {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
         return item
+    }
+
+    private func monitoredDirectoryURLs() -> [URL] {
+        guard let passwordEntry = getpwuid(getuid()) else {
+            return []
+        }
+
+        let homePath = String(cString: passwordEntry.pointee.pw_dir)
+        let homeURL = URL(fileURLWithPath: homePath, isDirectory: true)
+        return [homeURL]
     }
 }
 #endif

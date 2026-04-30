@@ -16,9 +16,9 @@ struct UniqueFileURLResolver {
         let pathExtension = proposedURL.pathExtension
         let baseName = proposedURL.deletingPathExtension().lastPathComponent
 
-        var counter = 2
+        var counter = 1
         while true {
-            let suffix = counter == 2 ? " copy" : " copy \(counter)"
+            let suffix = counter == 1 ? " copy" : " copy \(counter)"
             let candidateName = pathExtension.isEmpty
                 ? "\(baseName)\(suffix)"
                 : "\(baseName)\(suffix).\(pathExtension)"

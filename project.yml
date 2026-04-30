@@ -5,26 +5,61 @@ options:
     macOS: "13.0"
 settings:
   base:
-    PRODUCT_NAME: RightKit
     PRODUCT_BUNDLE_IDENTIFIER: com.deacyn.RightKit
     MARKETING_VERSION: 0.1.0
     CURRENT_PROJECT_VERSION: 1
     SWIFT_VERSION: 5.0
+    DEVELOPMENT_TEAM: HRN84R5P2A
 targets:
   RightKitApp:
     type: application
     platform: macOS
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.Mac:
+          enabled: 1
+        com.apple.Sandbox:
+          enabled: 1
+    dependencies:
+      - target: RightKitFinderExt
+        embed: true
     sources:
       - path: Sources/RightKitCore
       - path: Sources/RightKitApp
     settings:
       base:
+        PRODUCT_NAME: RightKit
+        PRODUCT_MODULE_NAME: RightKitApp
         PRODUCT_BUNDLE_IDENTIFIER: com.deacyn.RightKit
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Config/RightKitApp.Info.plist
-        CODE_SIGNING_ALLOWED: NO
-        CODE_SIGNING_REQUIRED: NO
-        ENABLE_HARDENED_RUNTIME: NO
-        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_ENTITLEMENTS: Config/RightKit.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: HRN84R5P2A
     scheme:
       testTargets: []
+  RightKitFinderExt:
+    type: app-extension
+    platform: macOS
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.Mac:
+          enabled: 1
+        com.apple.Sandbox:
+          enabled: 1
+    sources:
+      - path: Sources/RightKitCore
+      - path: Sources/RightKitFinderExt
+        excludes:
+          - README.md
+    settings:
+      base:
+        PRODUCT_NAME: RightKitFinderExt
+        PRODUCT_MODULE_NAME: RightKitFinderExt
+        PRODUCT_BUNDLE_IDENTIFIER: com.deacyn.RightKit.FinderExt
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Config/RightKitFinderExt.Info.plist
+        CODE_SIGN_ENTITLEMENTS: Config/RightKitFinderExt.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: HRN84R5P2A
+        SKIP_INSTALL: YES

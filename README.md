@@ -17,7 +17,7 @@ This repository currently contains:
 
 - a runnable SwiftUI host app
 - shared core models, storage, and file action services
-- a Finder Sync Extension source placeholder for the future Xcode target
+- a Finder Sync Extension target definition for the Xcode project
 - shared Chinese/English language settings, defaulting to Chinese
 
 The local machine currently has Command Line Tools but not a full Xcode installation, so the temporary scripts compile the host app with `swiftc`.
@@ -34,6 +34,25 @@ The generated app bundle is placed at:
 ```text
 .build/local/RightKit.app
 ```
+
+## Run Tests
+
+Core regression tests live under:
+
+```text
+Tests/RightKitCoreTests
+```
+
+Run them with:
+
+```bash
+chmod +x Scripts/test.sh
+Scripts/test.sh
+```
+
+For this repository, every code change should end by running `Scripts/test.sh`.
+
+The script does not require a full Xcode installation. It compiles `Sources/RightKitCore` together with the test runner using `swiftc`, which makes it usable on machines that only have Command Line Tools installed.
 
 ## Finder Extension
 
@@ -55,7 +74,7 @@ The extension source currently wires the MVP actions:
 
 ## Generate Xcode Project
 
-The repository now includes an `xcodegen` spec for the host app:
+The repository now includes an `xcodegen` spec for the host app and Finder extension:
 
 ```bash
 brew install xcodegen
@@ -64,7 +83,10 @@ Scripts/generate_xcodeproj.sh
 open RightKit.xcodeproj
 ```
 
-This creates a runnable macOS app target named `RightKitApp`.
+This creates:
+
+- `RightKitApp`
+- `RightKitFinderExt`
 
 ## Full Xcode Environment
 
@@ -89,7 +111,12 @@ Config/RightKitFinderExt.Info.plist
 Config/RightKitFinderExt.entitlements
 ```
 
-The default generated project keeps the extension out of the initial run path so the host app can launch without Apple Developer signing. Add the Finder Sync Extension target in Xcode after full Xcode installation and team signing are available.
+The generated project embeds `RightKitFinderExt` into `RightKitApp`. To make the Finder context menu appear, you still need to:
+
+1. install full Xcode
+2. set the same Signing Team on both targets
+3. run `RightKitApp` once
+4. enable `RightKit` under Finder Extensions in System Settings
 
 ## Language
 

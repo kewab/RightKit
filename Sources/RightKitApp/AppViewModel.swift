@@ -70,4 +70,14 @@ final class AppViewModel: ObservableObject {
         store.saveLanguage(newLanguage)
         statusMessage = strings.languageChanged(to: newLanguage)
     }
+
+    func copyFinderActivationCommand() {
+        let command = [
+            "pluginkit -e use -i \(RightKitBundle.finderExtensionIdentifier)",
+            "killall Finder"
+        ].joined(separator: "\n")
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(command, forType: .string)
+        statusMessage = strings.finderActivationCommandCopied
+    }
 }
