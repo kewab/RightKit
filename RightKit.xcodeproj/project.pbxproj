@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2222B062D925FD1A945A18 /* RightKitStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C220231D9659B5A17638C91A /* RightKitStrings.swift */; };
 		0A2434B2BFBA4F53B959EFC8 /* FavoriteDirectoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F9E7742539559D214A58EC /* FavoriteDirectoriesView.swift */; };
 		163215D12D3CF09851327D59 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E94C23A1FD113FAA102644 /* ContentView.swift */; };
 		1C1637BC54F31F6C49E1C1FF /* CutPasteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21774273A31AB93B8F0E152 /* CutPasteState.swift */; };
@@ -16,6 +17,7 @@
 		404460B71B7639BBE2E50F6C /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */; };
 		48A3FCEF629C520CDE0BC30E /* FileTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */; };
 		4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */; };
+		574773CE9F398BDC661E4189 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */; };
 		7F6618F8F5AE1583C3FED3FB /* FavoriteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */; };
 		8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */; };
 		9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587A59BDB98FDEC616A2D83 /* RightKitError.swift */; };
@@ -40,6 +42,8 @@
 		A3E94C23A1FD113FAA102644 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B6380250E4909A00DA8855D1 /* UniqueFileURLResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueFileURLResolver.swift; sourceTree = "<group>"; };
 		BEF36E322D1A24B33C2809CD /* FileActionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionService.swift; sourceTree = "<group>"; };
+		C220231D9659B5A17638C91A /* RightKitStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitStrings.swift; sourceTree = "<group>"; };
+		DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTemplatesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -48,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */,
+				E19D677A4C10E9386AEE23F7 /* Localization */,
 				D4D7334786EA1570BD23CC36 /* Models */,
 				82E87828CE1273D0D3245A97 /* Services */,
 				1D1AC928E84A045C4F459653 /* Storage */,
@@ -130,6 +135,15 @@
 			path = RightKitApp;
 			sourceTree = "<group>";
 		};
+		E19D677A4C10E9386AEE23F7 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */,
+				C220231D9659B5A17638C91A /* RightKitStrings.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -190,6 +204,7 @@
 			files = (
 				39151C03ECFC261EDF97A20A /* AppConfigurationStore.swift in Sources */,
 				4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */,
+				574773CE9F398BDC661E4189 /* AppLanguage.swift in Sources */,
 				F5B60E76D99A85AE86851577 /* AppViewModel.swift in Sources */,
 				163215D12D3CF09851327D59 /* ContentView.swift in Sources */,
 				1C1637BC54F31F6C49E1C1FF /* CutPasteState.swift in Sources */,
@@ -200,6 +215,7 @@
 				1C9023561E518D74926BBA0A /* NewFileTemplate.swift in Sources */,
 				8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */,
 				9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */,
+				0A2222B062D925FD1A945A18 /* RightKitStrings.swift in Sources */,
 				404460B71B7639BBE2E50F6C /* SharedViews.swift in Sources */,
 				2DE7B16B8DDAD1C0075FD71C /* StatusView.swift in Sources */,
 				B8CA6811F0A713F2CBA910DC /* UniqueFileURLResolver.swift in Sources */,

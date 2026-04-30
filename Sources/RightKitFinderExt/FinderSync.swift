@@ -13,29 +13,36 @@ final class FinderSync: FIFinderSync {
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
+        let strings = RightKitStrings(language: store.loadLanguage())
         let menu = NSMenu(title: "RightKit")
 
-        menu.addItem(menuItem("New Text File", action: #selector(newTextFile)))
+        addNewFileMenu(strings: strings, to: menu)
         menu.addItem(NSMenuItem.separator())
 
-        addDestinationMenu(title: "Copy To", action: #selector(copyToFavorite(_:)), to: menu)
-        addDestinationMenu(title: "Move To", action: #selector(moveToFavorite(_:)), to: menu)
+        addDestinationMenu(title: strings.copyTo, action: #selector(copyToFavorite(_:)), strings: strings, to: menu)
+        addDestinationMenu(title: strings.moveTo, action: #selector(moveToFavorite(_:)), strings: strings, to: menu)
+        addFavoriteDirectoryMenu(strings: strings, to: menu)
 
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(menuItem("Copy Path", action: #selector(copyPath)))
-        menu.addItem(menuItem("Cut", action: #selector(cutSelection)))
-        menu.addItem(menuItem("Paste", action: #selector(pasteCutItems)))
+        menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath)))
+        menu.addItem(menuItem(strings.cut, action: #selector(cutSelection)))
+        menu.addItem(menuItem(strings.paste, action: #selector(pasteCutItems)))
 
         return menu
     }
 
-    @objc private func newTextFile() {
+    @objc private func newFile(_ sender: NSMenuItem) {
         guard let directory = currentTargetDirectory(),
-              let template = store.loadFileTemplates().first(where: { $0.fileExtension == "txt" }) else {
+              let template = sender.representedObject as? NewFileTemplate else {
             return
         }
 
-        _ = try? fileActions.createFile(named: template.suggestedFilename, from: template, in: directory)
+        let strings = RightKitStrings(language: store.loadLanguage())
+        _ = try? fileActions.createFile(
+            named: strings.untitledFilename(for: template),
+            from: template,
+            in: directory
+        )
     }
 
     @objc private func copyToFavorite(_ sender: NSMenuItem) {
@@ -72,6 +79,13 @@ final class FinderSync: FIFinderSync {
         }
     }
 
+    @objc private func openFavoriteDirectory(_ sender: NSMenuItem) {
+        guard let directory = sender.representedObject as? URL else {
+            return
+        }
+        NSWorkspace.shared.open(directory)
+    }
+
     private func selectedURLs() -> [URL] {
         FIFinderSyncController.default().selectedItemURLs() ?? []
     }
@@ -95,7 +109,28 @@ final class FinderSync: FIFinderSync {
         return nil
     }
 
-    private func addDestinationMenu(title: String, action: Selector, to menu: NSMenu) {
+    private func addNewFileMenu(strings: RightKitStrings, to menu: NSMenu) {
+        let item = NSMenuItem(title: strings.newFile, action: nil, keyEquivalent: "")
+        let submenu = NSMenu(title: strings.newFile)
+        let templates = store.loadFileTemplates()
+
+        for template in templates {
+            let child = menuItem(strings.templateTitle(for: template), action: #selector(newFile(_:)))
+            child.representedObject = template
+            submenu.addItem(child)
+        }
+
+        if submenu.items.isEmpty {
+            let emptyItem = NSMenuItem(title: strings.noTemplates, action: nil, keyEquivalent: "")
+            emptyItem.isEnabled = false
+            submenu.addItem(emptyItem)
+        }
+
+        item.submenu = submenu
+        menu.addItem(item)
+    }
+
+    private func addDestinationMenu(title: String, action: Selector, strings: RightKitStrings, to menu: NSMenu) {
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         let submenu = NSMenu(title: title)
 
@@ -106,7 +141,27 @@ final class FinderSync: FIFinderSync {
         }
 
         if submenu.items.isEmpty {
-            let emptyItem = NSMenuItem(title: "No Favorite Directories", action: nil, keyEquivalent: "")
+            let emptyItem = NSMenuItem(title: strings.noFavoriteDirectories, action: nil, keyEquivalent: "")
+            emptyItem.isEnabled = false
+            submenu.addItem(emptyItem)
+        }
+
+        item.submenu = submenu
+        menu.addItem(item)
+    }
+
+    private func addFavoriteDirectoryMenu(strings: RightKitStrings, to menu: NSMenu) {
+        let item = NSMenuItem(title: strings.favoriteDirectoriesTitle, action: nil, keyEquivalent: "")
+        let submenu = NSMenu(title: strings.favoriteDirectoriesTitle)
+
+        for directory in store.loadFavoriteDirectories() {
+            let child = menuItem(directory.name, action: #selector(openFavoriteDirectory(_:)))
+            child.representedObject = directory.url
+            submenu.addItem(child)
+        }
+
+        if submenu.items.isEmpty {
+            let emptyItem = NSMenuItem(title: strings.noFavoriteDirectories, action: nil, keyEquivalent: "")
             emptyItem.isEnabled = false
             submenu.addItem(emptyItem)
         }

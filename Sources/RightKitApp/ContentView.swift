@@ -7,17 +7,17 @@ struct ContentView: View {
         TabView {
             FavoriteDirectoriesView(viewModel: viewModel)
                 .tabItem {
-                    Label("Favorites", systemImage: "folder")
+                    Label(viewModel.strings.favoritesTab, systemImage: "folder")
                 }
 
             FileTemplatesView(viewModel: viewModel)
                 .tabItem {
-                    Label("Templates", systemImage: "doc")
+                    Label(viewModel.strings.templatesTab, systemImage: "doc")
                 }
 
             StatusView(viewModel: viewModel)
                 .tabItem {
-                    Label("Status", systemImage: "gearshape")
+                    Label(viewModel.strings.statusTab, systemImage: "gearshape")
                 }
         }
         .frame(minWidth: 760, minHeight: 520)

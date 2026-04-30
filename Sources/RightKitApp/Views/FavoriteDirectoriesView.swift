@@ -7,13 +7,13 @@ struct FavoriteDirectoriesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HeaderView(
-                title: "Favorite Directories",
-                subtitle: "These destinations will appear in Copy To and Move To menus."
+                title: viewModel.strings.favoriteDirectoriesTitle,
+                subtitle: viewModel.strings.favoriteDirectoriesSubtitle
             )
 
             List {
                 if viewModel.favoriteDirectories.isEmpty {
-                    Text("No favorite directories yet.")
+                    Text(viewModel.strings.noFavoriteDirectories)
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(viewModel.favoriteDirectories) { directory in
@@ -36,13 +36,13 @@ struct FavoriteDirectoriesView: View {
                 Button {
                     chooseFavoriteDirectory()
                 } label: {
-                    Label("Add Directory", systemImage: "plus")
+                    Label(viewModel.strings.addDirectory, systemImage: "plus")
                 }
 
                 Button {
                     viewModel.reload()
                 } label: {
-                    Label("Reload", systemImage: "arrow.clockwise")
+                    Label(viewModel.strings.reload, systemImage: "arrow.clockwise")
                 }
 
                 Spacer()
@@ -60,7 +60,7 @@ struct FavoriteDirectoriesView: View {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
-        panel.prompt = "Add"
+        panel.prompt = viewModel.strings.addDirectory
 
         if panel.runModal() == .OK, let url = panel.url {
             viewModel.addFavoriteDirectory(url)

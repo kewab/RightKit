@@ -18,6 +18,7 @@ This repository currently contains:
 - a runnable SwiftUI host app
 - shared core models, storage, and file action services
 - a Finder Sync Extension source placeholder for the future Xcode target
+- shared Chinese/English language settings, defaulting to Chinese
 
 The local machine currently has Command Line Tools but not a full Xcode installation, so the temporary scripts compile the host app with `swiftc`.
 
@@ -41,6 +42,16 @@ The Finder extension source lives in:
 ```text
 Sources/RightKitFinderExt
 ```
+
+The extension source currently wires the MVP actions:
+
+- New File
+- Copy To
+- Move To
+- Favorite Directories
+- Copy Path
+- Cut
+- Paste
 
 ## Generate Xcode Project
 
@@ -79,3 +90,13 @@ Config/RightKitFinderExt.entitlements
 ```
 
 The default generated project keeps the extension out of the initial run path so the host app can launch without Apple Developer signing. Add the Finder Sync Extension target in Xcode after full Xcode installation and team signing are available.
+
+## Language
+
+RightKit stores the active language in shared configuration so the host app and Finder extension can render the same language.
+
+Default:
+
+```text
+中文
+```

@@ -6,26 +6,36 @@ struct StatusView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             HeaderView(
-                title: "RightKit Status",
-                subtitle: "Host app is ready. Finder menu wiring comes from the extension target."
+                title: viewModel.strings.statusTitle,
+                subtitle: viewModel.strings.statusSubtitle
             )
 
-            InfoRow(label: "App Group", value: AppGroup.identifier)
-            InfoRow(label: "Favorite Directories", value: "\(viewModel.favoriteDirectories.count)")
-            InfoRow(label: "File Templates", value: "\(viewModel.fileTemplates.count)")
-            InfoRow(label: "Cut Items", value: "\(viewModel.cutPasteState?.sourcePaths.count ?? 0)")
+            InfoRow(label: viewModel.strings.appGroup, value: AppGroup.identifier)
+            InfoRow(label: viewModel.strings.favoriteDirectoriesCount, value: "\(viewModel.favoriteDirectories.count)")
+            InfoRow(label: viewModel.strings.fileTemplatesCount, value: "\(viewModel.fileTemplates.count)")
+            InfoRow(label: viewModel.strings.cutItemsCount, value: "\(viewModel.cutPasteState?.sourcePaths.count ?? 0)")
+
+            Picker(viewModel.strings.languageLabel, selection: Binding(
+                get: { viewModel.language },
+                set: { viewModel.setLanguage($0) }
+            )) {
+                ForEach(AppLanguage.allCases) { language in
+                    Text(language.displayName).tag(language)
+                }
+            }
+            .pickerStyle(.segmented)
 
             HStack {
                 Button {
                     viewModel.reload()
                 } label: {
-                    Label("Reload Shared State", systemImage: "arrow.clockwise")
+                    Label(viewModel.strings.reloadSharedState, systemImage: "arrow.clockwise")
                 }
 
                 Button {
                     viewModel.clearCutPasteState()
                 } label: {
-                    Label("Clear Cut State", systemImage: "xmark.circle")
+                    Label(viewModel.strings.clearCutState, systemImage: "xmark.circle")
                 }
                 .disabled(viewModel.cutPasteState == nil)
 

@@ -5,6 +5,7 @@ final class AppConfigurationStore {
         static let favoriteDirectories = "favoriteDirectories"
         static let fileTemplates = "fileTemplates"
         static let cutPasteState = "cutPasteState"
+        static let language = "language"
     }
 
     private let defaults: UserDefaults
@@ -45,6 +46,18 @@ final class AppConfigurationStore {
             return
         }
         save(state, forKey: Key.cutPasteState)
+    }
+
+    func loadLanguage() -> AppLanguage {
+        guard let rawValue = defaults.string(forKey: Key.language),
+              let language = AppLanguage(rawValue: rawValue) else {
+            return .chinese
+        }
+        return language
+    }
+
+    func saveLanguage(_ language: AppLanguage) {
+        defaults.set(language.rawValue, forKey: Key.language)
     }
 
     private func load<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {

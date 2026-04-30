@@ -6,8 +6,8 @@ struct FileTemplatesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HeaderView(
-                title: "New File Templates",
-                subtitle: "The first version ships with a fixed minimal template set."
+                title: viewModel.strings.templatesTitle,
+                subtitle: viewModel.strings.templatesSubtitle
             )
 
             List(viewModel.fileTemplates) { template in
@@ -15,9 +15,9 @@ struct FileTemplatesView: View {
                     Image(systemName: "doc")
                         .foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(template.title)
+                        Text(viewModel.strings.templateTitle(for: template))
                             .font(.headline)
-                        Text(template.suggestedFilename)
+                        Text(viewModel.strings.untitledFilename(for: template))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -34,7 +34,7 @@ struct FileTemplatesView: View {
                 Button {
                     viewModel.resetTemplates()
                 } label: {
-                    Label("Reset Defaults", systemImage: "arrow.counterclockwise")
+                    Label(viewModel.strings.resetDefaults, systemImage: "arrow.counterclockwise")
                 }
 
                 Spacer()
