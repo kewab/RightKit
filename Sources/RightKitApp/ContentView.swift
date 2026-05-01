@@ -5,14 +5,30 @@ struct ContentView: View {
     @State private var selection: SidebarSection = .general
 
     var body: some View {
-        HStack(spacing: 0) {
-            AppSidebar(selection: $selection, strings: viewModel.strings)
-            Divider().overlay(Color.white.opacity(0.04))
-            contentView
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        ZStack {
+            AppBackgroundView()
+
+            HStack(spacing: 20) {
+                AppSidebar(selection: $selection, strings: viewModel.strings)
+
+                VStack(spacing: 16) {
+                    AppFloatingToolbar(
+                        title: selection.title(strings: viewModel.strings),
+                        subtitle: selection.subtitle(strings: viewModel.strings),
+                        language: viewModel.language.displayName,
+                        status: viewModel.statusMessage
+                    )
+
+                    contentView
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
+                .padding(.vertical, 20)
+                .padding(.trailing, 20)
+            }
+            .padding(.leading, 20)
         }
-        .background(AppBackgroundView())
-        .frame(minWidth: 1100, minHeight: 760)
+        .frame(minWidth: 1180, minHeight: 780)
+        .preferredColorScheme(.light)
     }
 
     @ViewBuilder
@@ -34,6 +50,28 @@ enum SidebarSection: String, CaseIterable, Identifiable {
     case favorites
 
     var id: String { rawValue }
+
+    func title(strings: RightKitStrings) -> String {
+        switch self {
+        case .general:
+            strings.generalSettingsTitle
+        case .newFile:
+            strings.templatesTab
+        case .favorites:
+            strings.favoriteDirectoriesTitle
+        }
+    }
+
+    func subtitle(strings: RightKitStrings) -> String {
+        switch self {
+        case .general:
+            strings.generalSettingsSubtitle
+        case .newFile:
+            strings.templatesSubtitle
+        case .favorites:
+            strings.favoriteDirectoriesSubtitle
+        }
+    }
 }
 
 private struct AppSidebar: View {
@@ -42,17 +80,24 @@ private struct AppSidebar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(spacing: 14) {
+            VStack(alignment: .leading, spacing: 16) {
                 AppBrandBadge()
-                Text("RightKit 0.1.0")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.92))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.top, 54)
-            .padding(.bottom, 42)
 
-            VStack(spacing: 14) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("RightKit")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(AppTheme.primaryText)
+
+                    Text("Finder extension toolkit")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 24)
+            .padding(.bottom, 20)
+
+            VStack(spacing: 8) {
                 ForEach(sidebarItems(strings: strings)) { item in
                     SidebarButton(
                         item: item,
@@ -62,21 +107,20 @@ private struct AppSidebar: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 12)
 
             Spacer()
         }
-        .frame(width: 280)
+        .frame(width: 276)
         .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.13, green: 0.15, blue: 0.17),
-                    Color(red: 0.21, green: 0.21, blue: 0.22)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            AppSidebarMaterial()
         )
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(AppTheme.divider, lineWidth: 1)
+        }
+        .shadow(color: AppTheme.shadow, radius: 20, y: 10)
     }
 
     private func sidebarItems(strings: RightKitStrings) -> [SidebarItem] {
@@ -116,12 +160,13 @@ private struct SidebarButton: View {
     let item: SidebarItem
     let isSelected: Bool
     let action: () -> Void
+    @State private var isHovered = false
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
                             LinearGradient(
                                 colors: [
@@ -133,36 +178,53 @@ private struct SidebarButton: View {
                             )
                         )
                     Image(systemName: item.icon)
-                        .font(.system(size: 20, weight: .semibold))
+                        .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(.white)
                 }
-                .frame(width: 44, height: 44)
+                .frame(width: 36, height: 36)
 
                 Text(item.title)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.95))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppTheme.primaryText)
 
                 Spacer()
             }
-            .padding(.horizontal, 18)
-            .frame(height: 66)
+            .padding(.horizontal, 14)
+            .frame(height: 48)
             .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(isSelected ? Color.white.opacity(0.12) : Color.clear)
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(backgroundFill)
             )
+            .overlay {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(isSelected ? AppTheme.selectedStroke : Color.clear, lineWidth: 1)
+            }
         }
         .buttonStyle(.plain)
+        .onHover { hovered in
+            isHovered = hovered
+        }
+    }
+
+    private var backgroundFill: Color {
+        if isSelected {
+            return AppTheme.selectedFill
+        }
+        if isHovered {
+            return AppTheme.hoverFill
+        }
+        return .clear
     }
 }
 
 private struct AppBrandBadge: View {
     var body: some View {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
+        RoundedRectangle(cornerRadius: 22, style: .continuous)
             .fill(
                 LinearGradient(
                     colors: [
                         Color.white.opacity(0.96),
-                        Color(red: 0.90, green: 0.96, blue: 1.0)
+                        Color(red: 0.93, green: 0.97, blue: 1.0)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -170,7 +232,7 @@ private struct AppBrandBadge: View {
             )
             .overlay {
                 Text("R")
-                    .font(.system(size: 54, weight: .bold, design: .rounded))
+                    .font(.system(size: 50, weight: .bold, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
                             colors: [
@@ -182,35 +244,44 @@ private struct AppBrandBadge: View {
                         )
                     )
             }
-            .frame(width: 110, height: 110)
-            .shadow(color: .black.opacity(0.18), radius: 12, y: 8)
+            .frame(width: 92, height: 92)
+            .overlay {
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .stroke(Color.white.opacity(0.75), lineWidth: 1)
+            }
+            .shadow(color: Color.black.opacity(0.10), radius: 14, y: 8)
     }
 }
 
 private struct AppBackgroundView: View {
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.17, green: 0.22, blue: 0.27),
-                    Color(red: 0.31, green: 0.38, blue: 0.44)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            AppTheme.background
 
             Circle()
-                .fill(Color(red: 0.24, green: 0.80, blue: 0.88).opacity(0.16))
-                .frame(width: 380, height: 380)
-                .blur(radius: 100)
-                .offset(x: 140, y: 250)
+                .fill(AppTheme.accent.opacity(0.08))
+                .frame(width: 300, height: 300)
+                .blur(radius: 80)
+                .offset(x: -220, y: -200)
 
             Circle()
-                .fill(Color(red: 0.98, green: 0.56, blue: 0.42).opacity(0.14))
-                .frame(width: 320, height: 320)
-                .blur(radius: 95)
-                .offset(x: -60, y: 290)
+                .fill(Color.white.opacity(0.95))
+                .frame(width: 480, height: 480)
+                .blur(radius: 120)
+                .offset(x: 220, y: -180)
         }
         .ignoresSafeArea()
     }
+}
+
+private struct AppSidebarMaterial: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = .sidebar
+        view.blendingMode = .behindWindow
+        view.state = .active
+        return view
+    }
+
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }

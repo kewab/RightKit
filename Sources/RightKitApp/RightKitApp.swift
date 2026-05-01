@@ -6,6 +6,9 @@ struct RightKitApp: App {
         WindowGroup {
             ContentView()
         }
-        .windowStyle(.titleBar)
+        .windowStyle(.hiddenTitleBar)
+        .windowToolbarStyle(.unifiedCompact(showsTitle: false))
+        .defaultSize(width: 1260, height: 820)
+        .windowResizability(.contentMinSize)
     }
 }

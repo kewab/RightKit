@@ -7,19 +7,18 @@ struct FavoriteDirectoriesView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 26) {
-                HeaderView(
-                    icon: "heart.fill",
-                    accent: Color(red: 1.0, green: 0.35, blue: 0.48),
+            VStack(alignment: .leading, spacing: 20) {
+                AppSectionTitle(
                     title: viewModel.strings.favoriteDirectoriesTitle,
-                    subtitle: viewModel.strings.favoriteDirectoriesSubtitle
+                    systemImage: "heart.fill",
+                    accent: AppTheme.accent
                 )
 
                 AppPanel {
                     VStack(spacing: 0) {
                         tableHeader
 
-                        Divider().overlay(Color.white.opacity(0.08))
+                        Divider().overlay(AppTheme.divider)
 
                         if viewModel.favoriteDirectories.isEmpty {
                             emptyState
@@ -35,7 +34,7 @@ struct FavoriteDirectoriesView: View {
                                         selection = directory.id
                                     }
 
-                                    Divider().overlay(Color.white.opacity(0.05))
+                                    Divider().overlay(AppTheme.subtleDivider)
                                 }
                             }
                         }
@@ -69,7 +68,7 @@ struct FavoriteDirectoriesView: View {
                         Text(viewModel.strings.showIcons)
                     }
                     .toggleStyle(.checkbox)
-                    .foregroundStyle(.white.opacity(0.92))
+                    .foregroundStyle(AppTheme.primaryText)
 
                     Toggle(isOn: Binding(
                         get: { viewModel.favoriteDirectoriesEnabled },
@@ -78,13 +77,13 @@ struct FavoriteDirectoriesView: View {
                         Text(viewModel.strings.enableFavoriteDirectories)
                     }
                     .toggleStyle(.checkbox)
-                    .foregroundStyle(.white.opacity(0.92))
+                    .foregroundStyle(AppTheme.primaryText)
                 }
 
                 statusText
             }
-            .padding(.horizontal, 36)
-            .padding(.vertical, 34)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 12)
         }
     }
 
@@ -94,15 +93,15 @@ struct FavoriteDirectoriesView: View {
             headerCell(viewModel.strings.realPathColumnTitle, width: 1, alignment: .leading)
             headerCell(viewModel.strings.displayNameColumnTitle, width: 420, alignment: .leading)
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 14)
-        .background(Color.white.opacity(0.03))
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color.white.opacity(0.45))
     }
 
     private func headerCell(_ title: String, width: CGFloat, alignment: Alignment = .center) -> some View {
         Text(title)
-            .font(.system(size: 16, weight: .bold))
-            .foregroundStyle(.white.opacity(0.94))
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(AppTheme.secondaryText)
             .frame(maxWidth: width == 1 ? .infinity : width, alignment: alignment)
     }
 
@@ -111,13 +110,13 @@ struct FavoriteDirectoriesView: View {
             Spacer(minLength: 56)
             Image(systemName: "folder.badge.plus")
                 .font(.system(size: 42, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.38))
+                .foregroundStyle(AppTheme.tertiaryText)
             Text(viewModel.strings.noFavoriteDirectories)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.76))
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(AppTheme.primaryText)
             Text(viewModel.strings.favoriteDirectoriesEmptyHint)
-                .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(.white.opacity(0.46))
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(AppTheme.secondaryText)
             Spacer(minLength: 56)
         }
         .frame(maxWidth: .infinity)
@@ -128,7 +127,7 @@ struct FavoriteDirectoriesView: View {
             Spacer()
             Text(viewModel.statusMessage)
                 .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(.white.opacity(0.58))
+                .foregroundStyle(AppTheme.secondaryText)
         }
     }
 
@@ -168,17 +167,17 @@ private struct FavoriteDirectoryRow: View {
                 .frame(width: 96)
 
             Text(directory.path)
-                .font(.system(size: 19, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.86))
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(AppTheme.primaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(directory.name)
-                .font(.system(size: 19, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.86))
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(AppTheme.primaryText)
                 .frame(width: 420, alignment: .leading)
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 16)
-        .background(isSelected ? Color.white.opacity(0.08) : Color.clear)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(isSelected ? AppTheme.selectedFill : Color.clear)
     }
 }

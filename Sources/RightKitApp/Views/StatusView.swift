@@ -5,18 +5,11 @@ struct GeneralSettingsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
-                HeaderView(
-                    icon: "gearshape.fill",
-                    accent: Color(red: 0.13, green: 0.69, blue: 0.98),
-                    title: viewModel.strings.generalSettingsTitle,
-                    subtitle: viewModel.strings.generalSettingsSubtitle
-                )
-
+            VStack(alignment: .leading, spacing: 20) {
                 AppSectionTitle(
                     title: viewModel.strings.launchAndDisplayTitle,
                     systemImage: "rocket.fill",
-                    accent: Color(red: 0.98, green: 0.33, blue: 0.43)
+                    accent: AppTheme.accent
                 )
 
                 AppPanel {
@@ -26,17 +19,17 @@ struct GeneralSettingsView: View {
                             set: { viewModel.setShowMenuIcons($0) }
                         )) {
                             Text(viewModel.strings.showMenuBarIcon)
-                                .font(.system(size: 18, weight: .semibold))
+                                .font(.system(size: 16, weight: .semibold))
                         }
                         .toggleStyle(.checkbox)
-                        .foregroundStyle(.white.opacity(0.92))
+                        .foregroundStyle(AppTheme.primaryText)
 
                         Spacer()
 
                         VStack(alignment: .leading, spacing: 18) {
                             labeledPicker(
                                 title: viewModel.strings.languageLabel,
-                                accent: .white.opacity(0.86)
+                                accent: AppTheme.secondaryText
                             ) {
                                 Picker("", selection: Binding(
                                     get: { viewModel.language },
@@ -53,7 +46,7 @@ struct GeneralSettingsView: View {
 
                             labeledPicker(
                                 title: viewModel.strings.scopeLabel,
-                                accent: Color(red: 1.0, green: 0.90, blue: 0.14)
+                                accent: AppTheme.secondaryText
                             ) {
                                 HStack(spacing: 8) {
                                     Picker("", selection: .constant(0)) {
@@ -66,7 +59,7 @@ struct GeneralSettingsView: View {
                                     Button {} label: {
                                         Image(systemName: "questionmark.circle.fill")
                                             .font(.system(size: 16, weight: .semibold))
-                                            .foregroundStyle(.white.opacity(0.66))
+                                            .foregroundStyle(AppTheme.tertiaryText)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -78,7 +71,7 @@ struct GeneralSettingsView: View {
                 AppSectionTitle(
                     title: viewModel.strings.triggerMethodsTitle,
                     systemImage: "hand.tap.fill",
-                    accent: Color(red: 0.17, green: 0.67, blue: 0.98)
+                    accent: AppTheme.accent
                 )
 
                 AppPanel {
@@ -113,19 +106,19 @@ struct GeneralSettingsView: View {
                 AppSectionTitle(
                     title: viewModel.strings.permissionsTitle,
                     systemImage: "key.fill",
-                    accent: Color(red: 1.0, green: 0.68, blue: 0.25)
+                    accent: AppTheme.accent
                 )
 
                 AppPanel {
                     VStack(alignment: .leading, spacing: 30) {
                         Text(viewModel.strings.permissionsDescription)
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundStyle(.white.opacity(0.82))
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundStyle(AppTheme.primaryText)
 
                         HStack {
                             Button(viewModel.strings.watchPermissionGuide) {}
                                 .buttonStyle(.plain)
-                                .foregroundStyle(Color(red: 0.15, green: 0.54, blue: 0.98))
+                                .foregroundStyle(AppTheme.accent)
 
                             Spacer()
 
@@ -133,7 +126,7 @@ struct GeneralSettingsView: View {
                                 viewModel.copyFinderActivationCommand()
                             }
                             .buttonStyle(.plain)
-                            .foregroundStyle(Color(red: 0.15, green: 0.54, blue: 0.98))
+                            .foregroundStyle(AppTheme.accent)
                         }
                     }
                 }
@@ -142,11 +135,11 @@ struct GeneralSettingsView: View {
                     Spacer()
                     Text(viewModel.statusMessage)
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.58))
+                        .foregroundStyle(AppTheme.secondaryText)
                 }
             }
-            .padding(.horizontal, 36)
-            .padding(.vertical, 34)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 12)
         }
     }
 
@@ -157,7 +150,7 @@ struct GeneralSettingsView: View {
     ) -> some View {
         HStack(spacing: 12) {
             Text(title)
-                .font(.system(size: 18, weight: .bold))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(accent)
                 .frame(width: 96, alignment: .trailing)
             content()
@@ -175,8 +168,8 @@ struct GeneralSettingsView: View {
                 .labelsHidden()
 
             Text("\(index). \(title)")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.88))
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(AppTheme.primaryText)
 
             control
 
@@ -184,7 +177,7 @@ struct GeneralSettingsView: View {
 
             Button(viewModel.strings.viewHowToUse) {}
                 .buttonStyle(.plain)
-                .foregroundStyle(Color(red: 0.15, green: 0.54, blue: 0.98))
+                .foregroundStyle(AppTheme.accent)
         }
     }
 }
@@ -192,24 +185,32 @@ struct GeneralSettingsView: View {
 struct AppCapsuleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 17, weight: .bold))
-            .foregroundStyle(.white.opacity(configuration.isPressed ? 0.7 : 0.94))
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(configuration.isPressed ? AppTheme.secondaryText : AppTheme.primaryText)
             .padding(.horizontal, 18)
-            .frame(height: 46)
+            .frame(height: 40)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.white.opacity(configuration.isPressed ? 0.08 : 0.12))
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(configuration.isPressed ? AppTheme.hoverFill : Color.white.opacity(0.78))
             )
+            .overlay {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(AppTheme.divider, lineWidth: 1)
+            }
     }
 }
 
 struct AppSmallSquareButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.white.opacity(configuration.isPressed ? 0.7 : 0.9))
+            .foregroundStyle(configuration.isPressed ? AppTheme.secondaryText : AppTheme.primaryText)
             .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color.white.opacity(configuration.isPressed ? 0.08 : 0.10))
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(configuration.isPressed ? AppTheme.hoverFill : Color.white.opacity(0.78))
             )
+            .overlay {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(AppTheme.divider, lineWidth: 1)
+            }
     }
 }

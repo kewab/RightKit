@@ -5,19 +5,18 @@ struct FileTemplatesView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 26) {
-                HeaderView(
-                    icon: "doc.badge.plus",
-                    accent: Color(red: 0.40, green: 0.84, blue: 0.95),
-                    title: viewModel.strings.templatesTab,
-                    subtitle: viewModel.strings.templatesSubtitle
+            VStack(alignment: .leading, spacing: 20) {
+                AppSectionTitle(
+                    title: viewModel.strings.templatesTitle,
+                    systemImage: "doc.badge.plus",
+                    accent: AppTheme.accent
                 )
 
                 AppPanel {
                     VStack(spacing: 0) {
                         headerRow
 
-                        Divider().overlay(Color.white.opacity(0.08))
+                        Divider().overlay(AppTheme.divider)
 
                         LazyVStack(spacing: 0) {
                             ForEach(viewModel.fileTemplates) { template in
@@ -30,7 +29,7 @@ struct FileTemplatesView: View {
                                     }
                                 )
 
-                                Divider().overlay(Color.white.opacity(0.05))
+                                Divider().overlay(AppTheme.subtleDivider)
                             }
                         }
                     }
@@ -51,7 +50,7 @@ struct FileTemplatesView: View {
 
                     Button(viewModel.strings.finderMenuTroubleshooting) {}
                         .buttonStyle(.plain)
-                        .foregroundStyle(Color(red: 0.15, green: 0.54, blue: 0.98))
+                        .foregroundStyle(AppTheme.accent)
 
                     Button(viewModel.strings.resetDefaults) {
                         viewModel.resetTemplates()
@@ -67,7 +66,7 @@ struct FileTemplatesView: View {
                         Text(viewModel.strings.showIcons)
                     }
                     .toggleStyle(.checkbox)
-                    .foregroundStyle(.white.opacity(0.92))
+                    .foregroundStyle(AppTheme.primaryText)
 
                     Toggle(isOn: Binding(
                         get: { viewModel.openNewFileAfterCreate },
@@ -76,7 +75,7 @@ struct FileTemplatesView: View {
                         Text(viewModel.strings.openFileAfterCreate)
                     }
                     .toggleStyle(.checkbox)
-                    .foregroundStyle(.white.opacity(0.92))
+                    .foregroundStyle(AppTheme.primaryText)
 
                     Toggle(isOn: Binding(
                         get: { viewModel.playSoundAfterCreate },
@@ -85,18 +84,18 @@ struct FileTemplatesView: View {
                         Text(viewModel.strings.playPromptSound)
                     }
                     .toggleStyle(.checkbox)
-                    .foregroundStyle(.white.opacity(0.92))
+                    .foregroundStyle(AppTheme.primaryText)
                 }
 
                 HStack {
                     Spacer()
                     Text(viewModel.statusMessage)
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.58))
+                        .foregroundStyle(AppTheme.secondaryText)
                 }
             }
-            .padding(.horizontal, 36)
-            .padding(.vertical, 34)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 12)
         }
     }
 
@@ -108,15 +107,15 @@ struct FileTemplatesView: View {
             headerCell(viewModel.strings.suffixColumnTitle, width: 140)
             headerCell(viewModel.strings.mainMenuColumnTitle, width: 140)
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 14)
-        .background(Color.white.opacity(0.03))
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color.white.opacity(0.45))
     }
 
     private func headerCell(_ title: String, width: CGFloat, alignment: Alignment = .center) -> some View {
         Text(title)
-            .font(.system(size: 16, weight: .bold))
-            .foregroundStyle(.white.opacity(0.94))
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(AppTheme.secondaryText)
             .frame(maxWidth: width == 1 ? .infinity : width, alignment: alignment)
     }
 
@@ -153,25 +152,32 @@ private struct FileTemplateRow: View {
                 .frame(width: 112)
 
             Text(strings.templateTitle(for: template))
-                .font(.system(size: 19, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.86))
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(AppTheme.primaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(template.fileExtension)
-                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                .foregroundStyle(.white.opacity(0.72))
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(AppTheme.secondaryText)
                 .frame(width: 140)
 
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white.opacity(0.07))
-                .frame(width: 34, height: 34)
+                .fill(isEnabled ? AppTheme.accent.opacity(0.12) : Color.black.opacity(0.03))
+                .frame(width: 30, height: 30)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .stroke(Color.white.opacity(0.04), lineWidth: 1)
+                        .stroke(isEnabled ? AppTheme.accent.opacity(0.18) : AppTheme.divider, lineWidth: 1)
                 )
+                .overlay {
+                    if isEnabled {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(AppTheme.accent)
+                    }
+                }
                 .frame(width: 140)
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 14)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
