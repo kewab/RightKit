@@ -31,6 +31,21 @@ func makeFileActionServiceTests() -> [TestCase] {
                 try expectEqual(filename, "bad/name.txt", "Invalid filename payload should be preserved")
             }
         },
+        TestCase(name: "FileActionService createFile reports missing directory") {
+            let fixture = try TemporaryDirectory()
+            let service = FileActionService()
+            let template = NewFileTemplate(title: "Text", fileExtension: "txt")
+            let missingDirectory = fixture.url.appendingPathComponent("Missing", isDirectory: true)
+
+            try expectThrows("Missing destination directory should be rejected") {
+                _ = try service.createFile(named: "Notes.txt", from: template, in: missingDirectory)
+            } validate: { error in
+                guard case RightKitError.directoryDoesNotExist(let path) = error else {
+                    throw TestFailure.message("Expected directoryDoesNotExist error, got \(error)")
+                }
+                try expectEqual(path, missingDirectory.path, "Missing directory payload should be preserved")
+            }
+        },
         TestCase(name: "FileActionService copyItems creates unique name when destination exists") {
             let fixture = try TemporaryDirectory()
             let service = FileActionService()
@@ -47,6 +62,21 @@ func makeFileActionServiceTests() -> [TestCase] {
             try expectEqual(copiedURLs[0].lastPathComponent, "source copy.txt", "Duplicate destination should be renamed predictably")
             try expectEqual(try String(contentsOf: copiedURLs[0], encoding: .utf8), "first", "Copied file content should match source")
             try expectEqual(try String(contentsOf: existingURL, encoding: .utf8), "existing", "Existing destination file should remain unchanged")
+        },
+        TestCase(name: "FileActionService copyItems reports missing source") {
+            let fixture = try TemporaryDirectory()
+            let service = FileActionService()
+            let missingSource = fixture.url.appendingPathComponent("missing.txt")
+            let destinationDirectory = try fixture.createSubdirectory(named: "Destination")
+
+            try expectThrows("Missing source should be rejected") {
+                _ = try service.copyItems(at: [missingSource], to: destinationDirectory)
+            } validate: { error in
+                guard case RightKitError.sourceDoesNotExist(let path) = error else {
+                    throw TestFailure.message("Expected sourceDoesNotExist error, got \(error)")
+                }
+                try expectEqual(path, missingSource.path, "Missing source payload should be preserved")
+            }
         },
         TestCase(name: "FileActionService moveItems moves files into target directory") {
             let fixture = try TemporaryDirectory()

@@ -46,11 +46,7 @@ final class AppViewModel: ObservableObject {
 
     func addFavoriteDirectory(_ url: URL) {
         let resolvedURL = url.standardizedFileURL
-        let bookmarkData = try? resolvedURL.bookmarkData(
-            options: [.withSecurityScope],
-            includingResourceValuesForKeys: nil,
-            relativeTo: nil
-        )
+        let bookmarkData = SecurityScopedBookmark.make(for: resolvedURL)
         let directory = FavoriteDirectory(
             name: resolvedURL.lastPathComponent,
             path: resolvedURL.path,

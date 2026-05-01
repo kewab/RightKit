@@ -37,6 +37,7 @@ func makeAppConfigurationStoreTests() -> [TestCase] {
             let store = AppConfigurationStore(suiteName: fixture.suiteName)
             let state = CutPasteState(
                 sourcePaths: ["/tmp/a.txt"],
+                securityScopedBookmarks: ["/tmp/a.txt": Data([0x10, 0x20])],
                 createdAt: Date(timeIntervalSince1970: 1234)
             )
 

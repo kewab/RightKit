@@ -4,11 +4,8 @@ import UniformTypeIdentifiers
 
 enum RightKitIconProvider {
     static func templateIcon(for template: NewFileTemplate, size: CGFloat = 20) -> NSImage {
-        if let type = UTType(filenameExtension: template.fileExtension) {
-            return sized(NSWorkspace.shared.icon(for: type), size: size)
-        }
-
-        return sized(NSWorkspace.shared.icon(forFileType: template.fileExtension), size: size)
+        let type = UTType(filenameExtension: template.fileExtension) ?? .data
+        return sized(NSWorkspace.shared.icon(for: type), size: size)
     }
 
     static func directoryIcon(for url: URL, size: CGFloat = 20) -> NSImage {
@@ -17,12 +14,14 @@ enum RightKitIconProvider {
 
     static func symbol(
         _ systemName: String,
-        pointSize: CGFloat = 17,
+        pointSize: CGFloat = 15,
         weight: NSFont.Weight = .regular
     ) -> NSImage? {
         let configuration = NSImage.SymbolConfiguration(pointSize: pointSize, weight: weight)
         let image = NSImage(systemSymbolName: systemName, accessibilityDescription: nil)
-        return image?.withSymbolConfiguration(configuration) ?? image
+        let configuredImage = image?.withSymbolConfiguration(configuration) ?? image
+        configuredImage?.isTemplate = true
+        return configuredImage
     }
 
     private static func sized(_ image: NSImage, size: CGFloat) -> NSImage {

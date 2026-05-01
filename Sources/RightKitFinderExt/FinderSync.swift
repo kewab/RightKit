@@ -19,14 +19,12 @@ final class FinderSync: FIFinderSync {
         let menu = NSMenu(title: "RightKit")
 
         addNewFileMenu(strings: strings, to: menu)
-        menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath), icon: "link.circle"))
-        menu.addItem(NSMenuItem.separator())
+        menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath), icon: "link"))
         addDestinationMenu(title: strings.copyTo, action: #selector(copyToFavorite(_:)), strings: strings, to: menu)
         addDestinationMenu(title: strings.moveTo, action: #selector(moveToFavorite(_:)), strings: strings, to: menu)
         addFavoriteDirectoryMenu(strings: strings, to: menu)
-        menu.addItem(NSMenuItem.separator())
-        menu.addItem(menuItem(strings.cut, action: #selector(cutSelection)))
-        menu.addItem(menuItem(strings.paste, action: #selector(pasteCutItems)))
+        menu.addItem(menuItem(strings.cut, action: #selector(cutSelection), icon: "scissors"))
+        menu.addItem(menuItem(strings.paste, action: #selector(pasteCutItems), icon: "clipboard"))
 
         return menu
     }
@@ -85,7 +83,17 @@ final class FinderSync: FIFinderSync {
     }
 
     @objc private func cutSelection() {
-        let state = CutPasteState(sourcePaths: selectedURLs().map(\.path))
+        let sourceURLs = selectedURLs()
+        let bookmarks = sourceURLs.reduce(into: [String: Data]()) { partialResult, url in
+            guard let bookmarkData = SecurityScopedBookmark.make(for: url) else {
+                return
+            }
+            partialResult[url.path] = bookmarkData
+        }
+        let state = CutPasteState(
+            sourcePaths: sourceURLs.map(\.path),
+            securityScopedBookmarks: bookmarks.isEmpty ? nil : bookmarks
+        )
         store.saveCutPasteState(state)
     }
 
@@ -166,7 +174,7 @@ final class FinderSync: FIFinderSync {
     }
 
     private func addDestinationMenu(title: String, action: Selector, strings: RightKitStrings, to menu: NSMenu) {
-        let symbolName = title == strings.copyTo ? "tray.and.arrow.down.fill" : "folder.fill.badge.minus"
+        let symbolName = title == strings.copyTo ? "doc.on.doc" : "folder.badge.minus"
         let item = menuItem(title, action: nil, icon: symbolName)
         let submenu = NSMenu(title: title)
 
@@ -191,7 +199,7 @@ final class FinderSync: FIFinderSync {
     }
 
     private func addFavoriteDirectoryMenu(strings: RightKitStrings, to menu: NSMenu) {
-        let item = menuItem(strings.favoriteDirectoriesTitle, action: nil, icon: "heart.circle")
+        let item = menuItem(strings.favoriteDirectoriesTitle, action: nil, icon: "star")
         let submenu = NSMenu(title: strings.favoriteDirectoriesTitle)
 
         for (index, directory) in store.loadFavoriteDirectories().enumerated() {
@@ -245,7 +253,15 @@ final class FinderSync: FIFinderSync {
         guard directories.indices.contains(tag) else {
             return nil
         }
-        return directories[tag].resolvedURL
+        let directory = directories[tag]
+
+        if let refreshedBookmarkData = directory.bookmarkResolution?.refreshedBookmarkData {
+            var updatedDirectories = directories
+            updatedDirectories[tag].bookmarkData = refreshedBookmarkData
+            store.saveFavoriteDirectories(updatedDirectories)
+        }
+
+        return directory.resolvedURL
     }
 
     private func monitoredDirectoryURLs() -> [URL] {

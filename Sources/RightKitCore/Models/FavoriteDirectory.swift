@@ -17,21 +17,15 @@ struct FavoriteDirectory: Identifiable, Codable, Hashable {
         URL(fileURLWithPath: path)
     }
 
-    var resolvedURL: URL {
+    var bookmarkResolution: SecurityScopedBookmark.Resolution? {
         guard let bookmarkData else {
-            return url
+            return nil
         }
 
-        var isStale = false
-        guard let resolvedURL = try? URL(
-            resolvingBookmarkData: bookmarkData,
-            options: [.withSecurityScope],
-            relativeTo: nil,
-            bookmarkDataIsStale: &isStale
-        ) else {
-            return url
-        }
+        return SecurityScopedBookmark.resolve(from: bookmarkData)
+    }
 
-        return resolvedURL
+    var resolvedURL: URL {
+        bookmarkResolution?.url ?? url
     }
 }
