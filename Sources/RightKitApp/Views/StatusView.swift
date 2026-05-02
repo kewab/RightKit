@@ -4,213 +4,174 @@ struct GeneralSettingsView: View {
     @ObservedObject var viewModel: AppViewModel
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                AppSectionTitle(
-                    title: viewModel.strings.launchAndDisplayTitle,
-                    systemImage: "rocket.fill",
-                    accent: AppTheme.accent
+        SettingsPage(
+            title: viewModel.strings.generalSettingsTitle,
+            subtitle: viewModel.strings.generalSettingsSubtitle,
+            iconStyle: .general
+        ) {
+            SettingsGroup(title: viewModel.strings.launchAndDisplayTitle) {
+                SettingsToggleRow(
+                    title: viewModel.strings.showMenuBarIcon,
+                    isOn: Binding(
+                        get: { viewModel.showMenuIcons },
+                        set: { viewModel.setShowMenuIcons($0) }
+                    )
                 )
 
-                AppPanel {
-                    HStack(alignment: .top, spacing: 24) {
-                        Toggle(isOn: Binding(
-                            get: { viewModel.showMenuIcons },
-                            set: { viewModel.setShowMenuIcons($0) }
-                        )) {
-                            Text(viewModel.strings.showMenuBarIcon)
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .toggleStyle(.checkbox)
-                        .foregroundStyle(AppTheme.primaryText)
+                SettingsDivider()
 
-                        Spacer()
-
-                        VStack(alignment: .leading, spacing: 18) {
-                            labeledPicker(
-                                title: viewModel.strings.languageLabel,
-                                accent: AppTheme.secondaryText
-                            ) {
-                                Picker("", selection: Binding(
-                                    get: { viewModel.language },
-                                    set: { viewModel.setLanguage($0) }
-                                )) {
-                                    ForEach(AppLanguage.allCases) { language in
-                                        Text(language.displayName).tag(language)
-                                    }
-                                }
-                                .labelsHidden()
-                                .pickerStyle(.menu)
-                                .frame(width: 220)
-                            }
-
-                            labeledPicker(
-                                title: viewModel.strings.scopeLabel,
-                                accent: AppTheme.secondaryText
-                            ) {
-                                HStack(spacing: 8) {
-                                    Picker("", selection: .constant(0)) {
-                                        Text(viewModel.strings.systemDiskScope).tag(0)
-                                    }
-                                    .labelsHidden()
-                                    .pickerStyle(.menu)
-                                    .frame(width: 220)
-
-                                    Button {} label: {
-                                        Image(systemName: "questionmark.circle.fill")
-                                            .font(.system(size: 16, weight: .semibold))
-                                            .foregroundStyle(AppTheme.tertiaryText)
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
+                SettingsPickerRow(title: viewModel.strings.languageLabel) {
+                    Picker("", selection: Binding(
+                        get: { viewModel.language },
+                        set: { viewModel.setLanguage($0) }
+                    )) {
+                        ForEach(AppLanguage.allCases) { language in
+                            Text(language.displayName).tag(language)
                         }
                     }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
                 }
 
-                AppSectionTitle(
-                    title: viewModel.strings.triggerMethodsTitle,
-                    systemImage: "hand.tap.fill",
-                    accent: AppTheme.accent
-                )
+                SettingsDivider()
 
-                AppPanel {
-                    VStack(spacing: 22) {
-                        triggerMethodRow(
-                            index: 1,
-                            title: viewModel.strings.triggerMethodOne,
-                            control: AnyView(
-                                Picker("", selection: .constant(0)) {
-                                    Text("Shift").tag(0)
-                                }
-                                .labelsHidden()
-                                .pickerStyle(.menu)
-                                .frame(width: 180)
-                            )
-                        )
-
-                        triggerMethodRow(
-                            index: 2,
-                            title: viewModel.strings.triggerMethodTwo,
-                            control: AnyView(EmptyView())
-                        )
-
-                        triggerMethodRow(
-                            index: 3,
-                            title: viewModel.strings.triggerMethodThree,
-                            control: AnyView(EmptyView())
-                        )
-                    }
-                }
-
-                AppSectionTitle(
-                    title: viewModel.strings.permissionsTitle,
-                    systemImage: "key.fill",
-                    accent: AppTheme.accent
-                )
-
-                AppPanel {
-                    VStack(alignment: .leading, spacing: 30) {
-                        Text(viewModel.strings.permissionsDescription)
-                            .font(.system(size: 15, weight: .medium))
-                            .foregroundStyle(AppTheme.primaryText)
-
-                        HStack {
-                            Button(viewModel.strings.watchPermissionGuide) {}
-                                .buttonStyle(.plain)
-                                .foregroundStyle(AppTheme.accent)
-
-                            Spacer()
-
-                            Button(viewModel.strings.permissionSetupGuide) {
-                                viewModel.copyFinderActivationCommand()
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundStyle(AppTheme.accent)
-                        }
-                    }
-                }
-
-                HStack {
-                    Spacer()
-                    Text(viewModel.statusMessage)
-                        .font(.system(size: 13, weight: .medium))
+                SettingsPickerRow(title: viewModel.strings.scopeLabel) {
+                    Text(viewModel.strings.systemDiskScope)
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(AppTheme.secondaryText)
                 }
             }
-            .padding(.horizontal, 8)
-            .padding(.bottom, 12)
+
+            SettingsGroup(title: viewModel.strings.triggerMethodsTitle) {
+                TriggerMethodRow(
+                    title: viewModel.strings.triggerMethodOne,
+                    helpTitle: viewModel.strings.viewHowToUse,
+                    control: AnyView(
+                        Picker("", selection: .constant(0)) {
+                            Text("Shift").tag(0)
+                        }
+                        .labelsHidden()
+                        .pickerStyle(.menu)
+                    )
+                )
+
+                SettingsDivider()
+
+                TriggerMethodRow(
+                    title: viewModel.strings.triggerMethodTwo,
+                    helpTitle: viewModel.strings.viewHowToUse,
+                    control: AnyView(EmptyView())
+                )
+
+                SettingsDivider()
+
+                TriggerMethodRow(
+                    title: viewModel.strings.triggerMethodThree,
+                    helpTitle: viewModel.strings.viewHowToUse,
+                    control: AnyView(EmptyView())
+                )
+            }
+
+            SettingsGroup(title: viewModel.strings.permissionsTitle) {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(viewModel.strings.permissionsDescription)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(AppTheme.secondaryText)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+
+                    HStack(spacing: 12) {
+                        Button(viewModel.strings.watchPermissionGuide) {}
+                            .buttonStyle(AppCapsuleButtonStyle())
+
+                        Button(viewModel.strings.permissionSetupGuide) {
+                            viewModel.copyFinderActivationCommand()
+                        }
+                        .buttonStyle(AppCapsuleButtonStyle())
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
+                }
+            }
+
+            HStack {
+                Spacer()
+                Text(viewModel.statusMessage)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(AppTheme.tertiaryText)
+            }
+            .padding(.top, 2)
         }
     }
+}
 
-    private func labeledPicker<Content: View>(
-        title: String,
-        accent: Color,
-        @ViewBuilder content: () -> Content
-    ) -> some View {
+private struct SettingsToggleRow: View {
+    let title: String
+    @Binding var isOn: Bool
+
+    var body: some View {
         HStack(spacing: 12) {
             Text(title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(accent)
-                .frame(width: 96, alignment: .trailing)
-            content()
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(AppTheme.primaryText)
+            Spacer()
+            Toggle("", isOn: $isOn)
+                .labelsHidden()
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+}
+
+private struct SettingsPickerRow<Control: View>: View {
+    let title: String
+    let control: Control
+
+    init(title: String, @ViewBuilder control: () -> Control) {
+        self.title = title
+        self.control = control()
     }
 
-    private func triggerMethodRow(
-        index: Int,
-        title: String,
-        control: AnyView
-    ) -> some View {
-        HStack(spacing: 14) {
-            Toggle("", isOn: .constant(false))
-                .toggleStyle(.checkbox)
-                .labelsHidden()
-
-            Text("\(index). \(title)")
-                .font(.system(size: 15, weight: .medium))
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(AppTheme.primaryText)
-
+            Spacer()
             control
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AppTheme.secondaryText)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+}
+
+private struct TriggerMethodRow: View {
+    let title: String
+    let helpTitle: String
+    let control: AnyView
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Toggle("", isOn: .constant(false))
+                .labelsHidden()
+                .disabled(true)
+
+            Text(title)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(AppTheme.primaryText)
 
             Spacer()
 
-            Button(viewModel.strings.viewHowToUse) {}
-                .buttonStyle(.plain)
-                .foregroundStyle(AppTheme.accent)
+            control
+
+            Button(helpTitle) {}
+                .buttonStyle(AppCapsuleButtonStyle())
         }
-    }
-}
-
-struct AppCapsuleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundStyle(configuration.isPressed ? AppTheme.secondaryText : AppTheme.primaryText)
-            .padding(.horizontal, 18)
-            .frame(height: 40)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(configuration.isPressed ? AppTheme.hoverFill : Color.white.opacity(0.78))
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.divider, lineWidth: 1)
-            }
-    }
-}
-
-struct AppSmallSquareButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(configuration.isPressed ? AppTheme.secondaryText : AppTheme.primaryText)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(configuration.isPressed ? AppTheme.hoverFill : Color.white.opacity(0.78))
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.divider, lineWidth: 1)
-            }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
     }
 }

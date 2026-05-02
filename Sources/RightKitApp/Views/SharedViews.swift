@@ -1,159 +1,258 @@
-import AppKit
 import SwiftUI
 
 enum AppTheme {
-    static let background = Color(red: 245 / 255, green: 245 / 255, blue: 247 / 255)
-    static let panelFill = Color.white.opacity(0.72)
-    static let sidebarFill = Color.white.opacity(0.58)
-    static let primaryText = Color(nsColor: .labelColor)
-    static let secondaryText = Color(nsColor: .secondaryLabelColor)
-    static let tertiaryText = Color(nsColor: .tertiaryLabelColor)
-    static let accent = Color(red: 0 / 255, green: 122 / 255, blue: 255 / 255)
-    static let divider = Color.black.opacity(0.08)
-    static let subtleDivider = Color.black.opacity(0.05)
-    static let shadow = Color.black.opacity(0.08)
-    static let hoverFill = Color.black.opacity(0.035)
-    static let selectedFill = accent.opacity(0.12)
-    static let selectedStroke = accent.opacity(0.22)
+    static let primaryText = Color.white
+    static let secondaryText = Color.white.opacity(0.74)
+    static let tertiaryText = Color.white.opacity(0.52)
+    static let accent = Color(red: 0.24, green: 0.62, blue: 1.0)
+
+    static let windowTop = Color(red: 0.125, green: 0.125, blue: 0.14)
+    static let windowBottom = Color(red: 0.095, green: 0.095, blue: 0.11)
+
+    static let sidebarPanelFill = Color(red: 0.16, green: 0.16, blue: 0.18).opacity(0.94)
+    static let sidebarPanelBorder = Color.white.opacity(0.10)
+    static let searchFieldFill = Color.white.opacity(0.07)
+    static let searchFieldBorder = Color.white.opacity(0.10)
+
+    static let detailPanelFill = Color(red: 0.18, green: 0.18, blue: 0.20).opacity(0.96)
+    static let detailPanelBorder = Color.white.opacity(0.10)
+
+    static let groupFill = Color.white.opacity(0.05)
+    static let groupStroke = Color.white.opacity(0.08)
+    static let rowHover = Color.white.opacity(0.06)
+    static let rowPressed = Color.white.opacity(0.09)
+    static let divider = Color.white.opacity(0.08)
+    static let selectedFill = Color.white.opacity(0.10)
 }
 
-struct AppFloatingToolbar: View {
+enum SidebarIconStyle {
+    case general
+    case newFile
+    case favorites
+
+    var symbol: String {
+        switch self {
+        case .general:
+            "gearshape.2.fill"
+        case .newFile:
+            "document.badge.plus.fill"
+        case .favorites:
+            "folder.fill.badge.star"
+        }
+    }
+
+    var gradient: [Color] {
+        switch self {
+        case .general:
+            [Color(red: 0.71, green: 0.73, blue: 0.78), Color(red: 0.55, green: 0.58, blue: 0.63)]
+        case .newFile:
+            [Color(red: 0.31, green: 0.72, blue: 1.0), Color(red: 0.13, green: 0.50, blue: 0.95)]
+        case .favorites:
+            [Color(red: 0.42, green: 0.80, blue: 1.0), Color(red: 0.20, green: 0.61, blue: 1.0)]
+        }
+    }
+}
+
+struct SidebarIcon: View {
+    let style: SidebarIconStyle
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 9, style: .continuous)
+            .fill(
+                LinearGradient(
+                    colors: style.gradient,
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .overlay {
+                Image(systemName: style.symbol)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .stroke(Color.white.opacity(0.18), lineWidth: 1)
+            }
+            .frame(width: 28, height: 28)
+    }
+}
+
+struct AppWindowBackground: View {
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [AppTheme.windowTop, AppTheme.windowBottom],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            Circle()
+                .fill(Color(red: 0.19, green: 0.26, blue: 0.42).opacity(0.34))
+                .blur(radius: 140)
+                .frame(width: 520, height: 520)
+                .offset(x: 360, y: -280)
+
+            Circle()
+                .fill(Color(red: 0.18, green: 0.20, blue: 0.28).opacity(0.26))
+                .blur(radius: 120)
+                .frame(width: 460, height: 460)
+                .offset(x: -360, y: 320)
+        }
+    }
+}
+
+struct SettingsPage<Content: View>: View {
     let title: String
     let subtitle: String
-    let language: String
-    let status: String
-
-    var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.system(size: 28, weight: .semibold))
-                    .foregroundStyle(AppTheme.primaryText)
-
-                Text(subtitle)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(AppTheme.secondaryText)
-                    .lineLimit(2)
-            }
-
-            Spacer(minLength: 16)
-
-            HStack(spacing: 8) {
-                AppToolbarBadge(systemImage: "globe", text: language)
-                AppToolbarBadge(systemImage: "checkmark.circle.fill", text: status, tint: AppTheme.accent)
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(AppTheme.panelFill)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(AppTheme.divider, lineWidth: 1)
-        }
-        .shadow(color: AppTheme.shadow, radius: 18, y: 10)
-    }
-}
-
-struct AppToolbarBadge: View {
-    let systemImage: String
-    let text: String
-    var tint: Color = AppTheme.primaryText
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: systemImage)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(tint)
-
-            Text(text)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(AppTheme.primaryText)
-                .lineLimit(1)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(
-            Capsule(style: .continuous)
-                .fill(Color.white.opacity(0.88))
-        )
-        .overlay {
-            Capsule(style: .continuous)
-                .stroke(AppTheme.divider, lineWidth: 1)
-        }
-    }
-}
-
-struct InfoRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Text(label)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(AppTheme.secondaryText)
-
-            Spacer()
-
-            Text(value)
-                .font(.system(.body, design: .monospaced))
-                .foregroundStyle(AppTheme.primaryText)
-        }
-        .padding(.vertical, 10)
-        .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(AppTheme.subtleDivider)
-                .frame(height: 1)
-        }
-    }
-}
-
-struct AppPanel<Content: View>: View {
+    let iconStyle: SidebarIconStyle
     let content: Content
 
-    init(@ViewBuilder content: () -> Content) {
+    init(
+        title: String,
+        subtitle: String,
+        iconStyle: SidebarIconStyle,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.iconStyle = iconStyle
         self.content = content()
     }
 
     var body: some View {
-        content
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(AppTheme.panelFill)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(AppTheme.divider, lineWidth: 1)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                HStack(alignment: .top, spacing: 12) {
+                    SidebarIcon(style: iconStyle)
+                        .frame(width: 34, height: 34)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(title)
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundStyle(AppTheme.primaryText)
+                        Text(subtitle)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(AppTheme.secondaryText)
+                    }
+                    Spacer()
+                }
+                .padding(.bottom, 6)
+
+                content
             }
-            .shadow(color: AppTheme.shadow, radius: 16, y: 8)
+            .padding(22)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(AppTheme.detailPanelFill)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                        .stroke(AppTheme.detailPanelBorder, lineWidth: 1)
+                }
+        )
     }
 }
 
-struct AppSectionTitle: View {
-    let title: String
-    let systemImage: String
-    let accent: Color
+struct SettingsGroup<Content: View>: View {
+    let title: String?
+    let content: Content
+
+    init(
+        title: String? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.title = title
+        self.content = content()
+    }
 
     var body: some View {
-        HStack(spacing: 10) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(accent.opacity(0.12))
-                Image(systemName: systemImage)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(accent)
+        VStack(alignment: .leading, spacing: 10) {
+            if let title {
+                Text(title)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppTheme.tertiaryText)
+                    .textCase(.uppercase)
+                    .tracking(0.7)
             }
-            .frame(width: 28, height: 28)
 
-            Text(title)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(AppTheme.primaryText)
+            VStack(spacing: 0) {
+                content
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(AppTheme.groupFill)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(AppTheme.groupStroke, lineWidth: 1)
+                    }
+            )
         }
+    }
+}
+
+struct SettingsDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(AppTheme.divider)
+            .frame(height: 1)
+    }
+}
+
+struct SettingsEmptyState: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Image(systemName: systemImage)
+                .font(.system(size: 28, weight: .semibold))
+                .foregroundStyle(AppTheme.tertiaryText)
+            Text(title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(AppTheme.primaryText)
+            Text(subtitle)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(AppTheme.secondaryText)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 36)
+    }
+}
+
+struct AppCapsuleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(AppTheme.primaryText)
+            .padding(.horizontal, 16)
+            .frame(height: 34)
+            .background(
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .fill(configuration.isPressed ? AppTheme.rowPressed : AppTheme.rowHover)
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .stroke(AppTheme.groupStroke, lineWidth: 1)
+            }
+    }
+}
+
+struct AppSmallSquareButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(AppTheme.primaryText)
+            .frame(width: 32, height: 32)
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(configuration.isPressed ? AppTheme.rowPressed : AppTheme.rowHover)
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(AppTheme.groupStroke, lineWidth: 1)
+            }
     }
 }

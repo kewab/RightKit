@@ -1,153 +1,105 @@
-import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct FavoriteDirectoriesView: View {
     @ObservedObject var viewModel: AppViewModel
     @State private var selection: FavoriteDirectory.ID?
+    @State private var isDirectoryImporterPresented = false
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                AppSectionTitle(
-                    title: viewModel.strings.favoriteDirectoriesTitle,
-                    systemImage: "heart.fill",
-                    accent: AppTheme.accent
-                )
+        SettingsPage(
+            title: viewModel.strings.favoriteDirectoriesTitle,
+            subtitle: viewModel.strings.favoriteDirectoriesSubtitle,
+            iconStyle: .favorites
+        ) {
+            SettingsGroup(title: viewModel.strings.favoriteDirectoriesTitle) {
+                if viewModel.favoriteDirectories.isEmpty {
+                    SettingsEmptyState(
+                        title: viewModel.strings.noFavoriteDirectories,
+                        subtitle: viewModel.strings.favoriteDirectoriesEmptyHint,
+                        systemImage: "folder.badge.plus"
+                    )
+                } else {
+                    ForEach(Array(viewModel.favoriteDirectories.enumerated()), id: \.element.id) { index, directory in
+                        FavoriteDirectoryRow(
+                            directory: directory,
+                            isSelected: selection == directory.id
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selection = directory.id
+                        }
 
-                AppPanel {
-                    VStack(spacing: 0) {
-                        tableHeader
-
-                        Divider().overlay(AppTheme.divider)
-
-                        if viewModel.favoriteDirectories.isEmpty {
-                            emptyState
-                        } else {
-                            LazyVStack(spacing: 0) {
-                                ForEach(viewModel.favoriteDirectories) { directory in
-                                    FavoriteDirectoryRow(
-                                        directory: directory,
-                                        isSelected: selection == directory.id
-                                    )
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        selection = directory.id
-                                    }
-
-                                    Divider().overlay(AppTheme.subtleDivider)
-                                }
-                            }
+                        if index < viewModel.favoriteDirectories.count - 1 {
+                            SettingsDivider()
                         }
                     }
                 }
+            }
 
-                HStack(spacing: 12) {
-                    roundedActionButton(systemImage: "plus") {
-                        chooseFavoriteDirectory()
-                    }
-
-                    roundedActionButton(systemImage: "minus") {
-                        viewModel.removeFavoriteDirectory(id: selection)
-                        selection = nil
-                    }
-                    .disabled(selection == nil)
-
-                    Spacer()
-
-                    Button(viewModel.strings.resetDefaults) {
-                        viewModel.reload()
-                    }
-                    .buttonStyle(AppCapsuleButtonStyle())
+            HStack(spacing: 10) {
+                Button {
+                    isDirectoryImporterPresented = true
+                } label: {
+                    Label(viewModel.strings.addDirectory, systemImage: "plus")
                 }
+                .buttonStyle(AppCapsuleButtonStyle())
 
-                HStack(spacing: 120) {
-                    Toggle(isOn: Binding(
+                Button {
+                    viewModel.removeFavoriteDirectory(id: selection)
+                    selection = nil
+                } label: {
+                    Image(systemName: "minus")
+                        .font(.system(size: 14, weight: .bold))
+                }
+                .buttonStyle(AppSmallSquareButtonStyle())
+                .disabled(selection == nil)
+
+                Button(viewModel.strings.resetDefaults) {
+                    viewModel.reload()
+                    selection = nil
+                }
+                .buttonStyle(AppCapsuleButtonStyle())
+
+                Spacer()
+            }
+
+            SettingsGroup(title: viewModel.strings.launchAndDisplayTitle) {
+                FavoriteToggleRow(
+                    title: viewModel.strings.showIcons,
+                    isOn: Binding(
                         get: { viewModel.showMenuIcons },
                         set: { viewModel.setShowMenuIcons($0) }
-                    )) {
-                        Text(viewModel.strings.showIcons)
-                    }
-                    .toggleStyle(.checkbox)
-                    .foregroundStyle(AppTheme.primaryText)
+                    )
+                )
 
-                    Toggle(isOn: Binding(
+                SettingsDivider()
+
+                FavoriteToggleRow(
+                    title: viewModel.strings.enableFavoriteDirectories,
+                    isOn: Binding(
                         get: { viewModel.favoriteDirectoriesEnabled },
                         set: { viewModel.setFavoriteDirectoriesEnabled($0) }
-                    )) {
-                        Text(viewModel.strings.enableFavoriteDirectories)
-                    }
-                    .toggleStyle(.checkbox)
-                    .foregroundStyle(AppTheme.primaryText)
-                }
-
-                statusText
+                    )
+                )
             }
-            .padding(.horizontal, 8)
-            .padding(.bottom, 12)
+
+            HStack {
+                Spacer()
+                Text(viewModel.statusMessage)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(AppTheme.tertiaryText)
+            }
+            .padding(.top, 2)
         }
-    }
-
-    private var tableHeader: some View {
-        HStack(spacing: 0) {
-            headerCell(viewModel.strings.iconColumnTitle, width: 96)
-            headerCell(viewModel.strings.realPathColumnTitle, width: 1, alignment: .leading)
-            headerCell(viewModel.strings.displayNameColumnTitle, width: 420, alignment: .leading)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color.white.opacity(0.45))
-    }
-
-    private func headerCell(_ title: String, width: CGFloat, alignment: Alignment = .center) -> some View {
-        Text(title)
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundStyle(AppTheme.secondaryText)
-            .frame(maxWidth: width == 1 ? .infinity : width, alignment: alignment)
-    }
-
-    private var emptyState: some View {
-        VStack(spacing: 14) {
-            Spacer(minLength: 56)
-            Image(systemName: "folder.badge.plus")
-                .font(.system(size: 42, weight: .semibold))
-                .foregroundStyle(AppTheme.tertiaryText)
-            Text(viewModel.strings.noFavoriteDirectories)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(AppTheme.primaryText)
-            Text(viewModel.strings.favoriteDirectoriesEmptyHint)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(AppTheme.secondaryText)
-            Spacer(minLength: 56)
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private var statusText: some View {
-        HStack {
-            Spacer()
-            Text(viewModel.statusMessage)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(AppTheme.secondaryText)
-        }
-    }
-
-    private func roundedActionButton(systemImage: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: systemImage)
-                .font(.system(size: 18, weight: .bold))
-                .frame(width: 44, height: 44)
-        }
-        .buttonStyle(AppSmallSquareButtonStyle())
-    }
-
-    private func chooseFavoriteDirectory() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.allowsMultipleSelection = false
-        panel.prompt = viewModel.strings.addDirectory
-
-        if panel.runModal() == .OK, let url = panel.url {
+        .fileImporter(
+            isPresented: $isDirectoryImporterPresented,
+            allowedContentTypes: [.folder],
+            allowsMultipleSelection: false
+        ) { result in
+            guard case .success(let urls) = result, let url = urls.first else {
+                return
+            }
             viewModel.addFavoriteDirectory(url)
             selection = viewModel.favoriteDirectories.last?.id
         }
@@ -159,25 +111,51 @@ private struct FavoriteDirectoryRow: View {
     let isSelected: Bool
 
     var body: some View {
-        HStack(spacing: 0) {
-            Image(nsImage: RightKitIconProvider.directoryIcon(for: directory.url, size: 32))
+        HStack(spacing: 12) {
+            Image(nsImage: RightKitIconProvider.directoryIcon(for: directory.url, size: 24))
                 .resizable()
                 .interpolation(.high)
-                .frame(width: 32, height: 32)
-                .frame(width: 96)
+                .frame(width: 24, height: 24)
 
-            Text(directory.path)
-                .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(AppTheme.primaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(directory.name)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppTheme.primaryText)
+                Text(directory.path)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(AppTheme.tertiaryText)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
 
-            Text(directory.name)
-                .font(.system(size: 15, weight: .medium))
+            Spacer()
+
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppTheme.accent)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(isSelected ? AppTheme.selectedFill : Color.clear)
+    }
+}
+
+private struct FavoriteToggleRow: View {
+    let title: String
+    @Binding var isOn: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(AppTheme.primaryText)
-                .frame(width: 420, alignment: .leading)
+            Spacer()
+            Toggle("", isOn: $isOn)
+                .labelsHidden()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(isSelected ? AppTheme.selectedFill : Color.clear)
     }
 }
