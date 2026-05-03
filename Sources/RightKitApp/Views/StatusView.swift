@@ -11,11 +11,18 @@ struct GeneralSettingsView: View {
         ) {
             SettingsGroup(title: viewModel.strings.launchAndDisplayTitle) {
                 SettingsToggleRow(
-                    title: viewModel.strings.showMenuBarIcon,
+                    title: viewModel.strings.launchAtLogin,
                     isOn: Binding(
-                        get: { viewModel.showMenuIcons },
-                        set: { viewModel.setShowMenuIcons($0) }
+                        get: { viewModel.launchAtLoginEnabled },
+                        set: { viewModel.setLaunchAtLogin($0) }
                     )
+                )
+
+                SettingsDivider()
+
+                SettingsInfoRow(
+                    title: viewModel.strings.menuBarBehaviorTitle,
+                    detail: viewModel.strings.menuBarBehaviorDescription
                 )
 
                 SettingsDivider()
@@ -80,11 +87,18 @@ struct GeneralSettingsView: View {
                         .padding(.horizontal, 16)
                         .padding(.top, 16)
 
+                    SettingsInfoRow(
+                        title: viewModel.strings.finderContextMenuStatus,
+                        detail: viewModel.strings.finderExtensionSetupSubtitle
+                    )
+
                     HStack(spacing: 12) {
-                        Button(viewModel.strings.watchPermissionGuide) {}
+                        Button(viewModel.strings.openFinderExtensionSettings) {
+                            viewModel.openFinderExtensionSettings()
+                        }
                             .buttonStyle(AppCapsuleButtonStyle())
 
-                        Button(viewModel.strings.permissionSetupGuide) {
+                        Button(viewModel.strings.copyFinderActivationCommand) {
                             viewModel.copyFinderActivationCommand()
                         }
                         .buttonStyle(AppCapsuleButtonStyle())
@@ -104,6 +118,27 @@ struct GeneralSettingsView: View {
             }
             .padding(.top, 2)
         }
+    }
+}
+
+private struct SettingsInfoRow: View {
+    let title: String
+    let detail: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(AppTheme.primaryText)
+
+            Text(detail)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(AppTheme.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 

@@ -54,6 +54,18 @@ func makeAppConfigurationStoreTests() -> [TestCase] {
             store.saveLanguage(.english)
 
             try expectEqual(store.loadLanguage(), .english, "Saved language should load back unchanged")
+        },
+        TestCase(name: "AppConfigurationStore stores Finder extension session activity") {
+            let fixture = UserDefaultsFixture()
+            let store = AppConfigurationStore(suiteName: fixture.suiteName)
+
+            try expectEqual(store.loadFinderExtensionSessionActive(), false, "Fresh stores should default Finder extension session activity to false")
+
+            store.saveFinderExtensionSessionActive(true)
+            try expectEqual(store.loadFinderExtensionSessionActive(), true, "Finder extension session activity should persist when enabled")
+
+            store.saveFinderExtensionSessionActive(false)
+            try expectEqual(store.loadFinderExtensionSessionActive(), false, "Finder extension session activity should persist when disabled")
         }
     ]
 }

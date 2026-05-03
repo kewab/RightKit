@@ -15,8 +15,13 @@ final class FinderSync: FIFinderSync {
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
-        let strings = RightKitStrings(language: store.loadLanguage())
         let menu = NSMenu(title: "RightKit")
+
+        guard store.loadFinderExtensionSessionActive() else {
+            return menu
+        }
+
+        let strings = RightKitStrings(language: store.loadLanguage())
 
         addNewFileMenu(strings: strings, to: menu)
         menu.addItem(menuItem(strings.copyPath, action: #selector(copyPath), icon: "link"))
@@ -225,7 +230,7 @@ final class FinderSync: FIFinderSync {
     private func menuItem(_ title: String, action: Selector?, icon: String? = nil) -> NSMenuItem {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
-        if store.loadShowMenuIcons(), let icon {
+        if store.loadShowContextMenuIcons(), let icon {
             item.image = RightKitIconProvider.symbol(icon)
         }
         return item
@@ -234,7 +239,7 @@ final class FinderSync: FIFinderSync {
     private func menuItem(_ title: String, action: Selector?, icon: NSImage?) -> NSMenuItem {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
-        if store.loadShowMenuIcons() {
+        if store.loadShowContextMenuIcons() {
             item.image = icon
         }
         return item

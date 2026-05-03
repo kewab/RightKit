@@ -66,10 +66,10 @@ struct FavoriteDirectoriesView: View {
 
             SettingsGroup(title: viewModel.strings.launchAndDisplayTitle) {
                 FavoriteToggleRow(
-                    title: viewModel.strings.showIcons,
+                    title: viewModel.strings.showContextMenuIcons,
                     isOn: Binding(
-                        get: { viewModel.showMenuIcons },
-                        set: { viewModel.setShowMenuIcons($0) }
+                        get: { viewModel.showContextMenuIcons },
+                        set: { viewModel.setShowContextMenuIcons($0) }
                     )
                 )
 

@@ -28,10 +28,10 @@ struct FileTemplatesView: View {
 
             SettingsGroup(title: viewModel.strings.launchAndDisplayTitle) {
                 TemplateToggleRow(
-                    title: viewModel.strings.showIcons,
+                    title: viewModel.strings.showContextMenuIcons,
                     isOn: Binding(
-                        get: { viewModel.showMenuIcons },
-                        set: { viewModel.setShowMenuIcons($0) }
+                        get: { viewModel.showContextMenuIcons },
+                        set: { viewModel.setShowContextMenuIcons($0) }
                     )
                 )
 

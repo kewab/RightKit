@@ -40,8 +40,8 @@ struct RightKitStrings {
 
     var generalSettingsSubtitle: String {
         switch language {
-        case .chinese: return "控制菜单显示、触发方式和基础权限引导。"
-        case .english: return "Control menu visibility, trigger methods, and permission guidance."
+        case .chinese: return "控制开机启动、菜单栏驻留行为和 Finder 权限引导。"
+        case .english: return "Control launch at login, menu bar residency, and Finder permission guidance."
         }
     }
 
@@ -124,22 +124,22 @@ struct RightKitStrings {
 
     var permissionsDescription: String {
         switch language {
-        case .chinese: return "部分功能无法使用时，您可以授予完全磁盘访问权限来解决。"
-        case .english: return "If some actions fail, granting Full Disk Access can help resolve permission issues."
+        case .chinese: return "RightKit 运行时会提供 Finder 右键菜单，真正退出后会自动隐藏。如果部分文件操作失败，授予完全磁盘访问权限通常可以解决问题。"
+        case .english: return "RightKit shows its Finder context menu while the app is running and hides it after a full quit. If some file actions fail, granting Full Disk Access usually helps."
         }
     }
 
-    var watchPermissionGuide: String {
+    var openFinderExtensionSettings: String {
         switch language {
-        case .chinese: return "观看权限设置教学 >>"
-        case .english: return "Watch Permission Guide >>"
+        case .chinese: return "打开扩展设置"
+        case .english: return "Open Extension Settings"
         }
     }
 
-    var permissionSetupGuide: String {
+    var copyFinderActivationCommand: String {
         switch language {
-        case .chinese: return "权限设置引导 >>"
-        case .english: return "Permission Setup Guide >>"
+        case .chinese: return "复制 Finder 启用命令"
+        case .english: return "Copy Finder Activation Command"
         }
     }
 
@@ -171,10 +171,59 @@ struct RightKitStrings {
         }
     }
 
-    var showMenuBarIcon: String {
+    var showContextMenuIcons: String {
         switch language {
-        case .chinese: return "显示菜单栏图标"
-        case .english: return "Show menu bar icon"
+        case .chinese: return "显示右键菜单图标"
+        case .english: return "Show context menu icons"
+        }
+    }
+
+    var launchAtLogin: String {
+        switch language {
+        case .chinese: return "开机启动"
+        case .english: return "Launch at login"
+        }
+    }
+
+    var menuBarBehaviorTitle: String {
+        switch language {
+        case .chinese: return "退出到菜单栏"
+        case .english: return "Quit To Menu Bar"
+        }
+    }
+
+    var menuBarBehaviorDescription: String {
+        switch language {
+        case .chinese: return "关闭主窗口后可以从菜单栏小图标重新打开；如需完全退出，请使用菜单栏中的“退出 RightKit”。"
+        case .english: return "After the main window closes, reopen it from the menu bar icon. To fully exit, use Quit RightKit from the menu bar."
+        }
+    }
+
+    var menuBarStatus: String {
+        switch language {
+        case .chinese: return "菜单栏常驻已启用"
+        case .english: return "Menu bar residency is enabled"
+        }
+    }
+
+    var openMainWindow: String {
+        switch language {
+        case .chinese: return "打开主窗口"
+        case .english: return "Open Main Window"
+        }
+    }
+
+    var quitApp: String {
+        switch language {
+        case .chinese: return "退出 RightKit"
+        case .english: return "Quit RightKit"
+        }
+    }
+
+    var finderContextMenuStatus: String {
+        switch language {
+        case .chinese: return "Finder 右键菜单跟随 App 运行状态"
+        case .english: return "Finder context menu follows app runtime"
         }
     }
 
@@ -444,13 +493,6 @@ struct RightKitStrings {
         }
     }
 
-    var copyFinderActivationCommand: String {
-        switch language {
-        case .chinese: return "复制 Finder 启用命令"
-        case .english: return "Copy Finder Activation Command"
-        }
-    }
-
     var finderExtensionSetupFootnote: String {
         switch language {
         case .chinese: return "当前工程已经包含 Finder 扩展目标，但完整构建和启用仍依赖本机已安装完整 Xcode。"
@@ -462,6 +504,48 @@ struct RightKitStrings {
         switch language {
         case .chinese: return "Finder 扩展启用命令已复制到剪贴板"
         case .english: return "Finder extension activation command copied to the clipboard"
+        }
+    }
+
+    var finderExtensionSettingsOpened: String {
+        switch language {
+        case .chinese: return "已打开系统扩展设置"
+        case .english: return "Opened the system extension settings"
+        }
+    }
+
+    var launchAtLoginEnabledStatus: String {
+        switch language {
+        case .chinese: return "已启用开机启动"
+        case .english: return "Launch at login enabled"
+        }
+    }
+
+    var launchAtLoginDisabledStatus: String {
+        switch language {
+        case .chinese: return "已关闭开机启动"
+        case .english: return "Launch at login disabled"
+        }
+    }
+
+    var launchAtLoginRequiresApprovalStatus: String {
+        switch language {
+        case .chinese: return "开机启动已登记，仍需在系统设置里确认"
+        case .english: return "Launch at login is registered and still needs approval in System Settings"
+        }
+    }
+
+    var launchAtLoginUnavailableStatus: String {
+        switch language {
+        case .chinese: return "当前构建暂时无法启用开机启动"
+        case .english: return "Launch at login is unavailable for this build"
+        }
+    }
+
+    func launchAtLoginChangeFailed(_ reason: String) -> String {
+        switch language {
+        case .chinese: return "更新开机启动失败：\(reason)"
+        case .english: return "Failed to update launch at login: \(reason)"
         }
     }
 

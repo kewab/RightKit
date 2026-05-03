@@ -8,35 +8,41 @@ final class AppViewModel: ObservableObject {
     @Published private(set) var enabledTemplateExtensions: Set<String>
     @Published private(set) var cutPasteState: CutPasteState?
     @Published private(set) var language: AppLanguage
-    @Published private(set) var showMenuIcons: Bool
+    @Published private(set) var showContextMenuIcons: Bool
     @Published private(set) var favoriteDirectoriesEnabled: Bool
     @Published private(set) var openNewFileAfterCreate: Bool
     @Published private(set) var playSoundAfterCreate: Bool
+    @Published private(set) var launchAtLoginEnabled: Bool
     @Published var statusMessage: String
 
     private let store: AppConfigurationStore
+    private let launchAtLoginController: LaunchAtLoginController
 
     init(store: AppConfigurationStore = AppConfigurationStore()) {
+        let launchAtLoginController = LaunchAtLoginController()
         let loadedFavoriteDirectories = store.loadFavoriteDirectories()
         let loadedFileTemplates = store.loadFileTemplates()
         let loadedEnabledTemplateExtensions = store.loadEnabledTemplateExtensions(availableTemplates: loadedFileTemplates)
         let loadedCutPasteState = store.loadCutPasteState()
         let loadedLanguage = store.loadLanguage()
-        let loadedShowMenuIcons = store.loadShowMenuIcons()
+        let loadedShowContextMenuIcons = store.loadShowContextMenuIcons()
         let loadedFavoriteDirectoriesEnabled = store.loadFavoriteDirectoriesEnabled()
         let loadedOpenNewFileAfterCreate = store.loadOpenNewFileAfterCreate()
         let loadedPlaySoundAfterCreate = store.loadPlaySoundAfterCreate()
+        let loadedLaunchAtLoginEnabled = launchAtLoginController.currentState().isToggleOn
 
         self.store = store
+        self.launchAtLoginController = launchAtLoginController
         favoriteDirectories = loadedFavoriteDirectories
         fileTemplates = loadedFileTemplates
         enabledTemplateExtensions = loadedEnabledTemplateExtensions
         cutPasteState = loadedCutPasteState
         language = loadedLanguage
-        showMenuIcons = loadedShowMenuIcons
+        showContextMenuIcons = loadedShowContextMenuIcons
         favoriteDirectoriesEnabled = loadedFavoriteDirectoriesEnabled
         openNewFileAfterCreate = loadedOpenNewFileAfterCreate
         playSoundAfterCreate = loadedPlaySoundAfterCreate
+        launchAtLoginEnabled = loadedLaunchAtLoginEnabled
         statusMessage = RightKitStrings(language: loadedLanguage).ready
     }
 
@@ -99,10 +105,11 @@ final class AppViewModel: ObservableObject {
         enabledTemplateExtensions = store.loadEnabledTemplateExtensions(availableTemplates: fileTemplates)
         cutPasteState = store.loadCutPasteState()
         language = store.loadLanguage()
-        showMenuIcons = store.loadShowMenuIcons()
+        showContextMenuIcons = store.loadShowContextMenuIcons()
         favoriteDirectoriesEnabled = store.loadFavoriteDirectoriesEnabled()
         openNewFileAfterCreate = store.loadOpenNewFileAfterCreate()
         playSoundAfterCreate = store.loadPlaySoundAfterCreate()
+        launchAtLoginEnabled = launchAtLoginController.currentState().isToggleOn
         statusMessage = strings.reloadedSharedConfiguration
     }
 
@@ -112,10 +119,31 @@ final class AppViewModel: ObservableObject {
         statusMessage = strings.languageChanged(to: newLanguage)
     }
 
-    func setShowMenuIcons(_ isEnabled: Bool) {
-        showMenuIcons = isEnabled
-        store.saveShowMenuIcons(isEnabled)
+    func setShowContextMenuIcons(_ isEnabled: Bool) {
+        showContextMenuIcons = isEnabled
+        store.saveShowContextMenuIcons(isEnabled)
         statusMessage = strings.reloadedSharedConfiguration
+    }
+
+    func setLaunchAtLogin(_ isEnabled: Bool) {
+        do {
+            let state = try launchAtLoginController.setEnabled(isEnabled)
+            launchAtLoginEnabled = state.isToggleOn
+
+            switch state {
+            case .enabled:
+                statusMessage = strings.launchAtLoginEnabledStatus
+            case .notRegistered:
+                statusMessage = strings.launchAtLoginDisabledStatus
+            case .requiresApproval:
+                statusMessage = strings.launchAtLoginRequiresApprovalStatus
+            case .notFound:
+                statusMessage = strings.launchAtLoginUnavailableStatus
+            }
+        } catch {
+            launchAtLoginEnabled = launchAtLoginController.currentState().isToggleOn
+            statusMessage = strings.launchAtLoginChangeFailed(error.localizedDescription)
+        }
     }
 
     func setFavoriteDirectoriesEnabled(_ isEnabled: Bool) {
@@ -159,5 +187,14 @@ final class AppViewModel: ObservableObject {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(command, forType: .string)
         statusMessage = strings.finderActivationCommandCopied
+    }
+
+    func openFinderExtensionSettings() {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.ExtensionsPreferences") else {
+            return
+        }
+
+        NSWorkspace.shared.open(url)
+        statusMessage = strings.finderExtensionSettingsOpened
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A2222B062D925FD1A945A18 /* RightKitStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C220231D9659B5A17638C91A /* RightKitStrings.swift */; };
 		0A2434B2BFBA4F53B959EFC8 /* FavoriteDirectoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F9E7742539559D214A58EC /* FavoriteDirectoriesView.swift */; };
+		1565E6D00ECAAA94D7E6C930 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98013C09F8C3C8E667622F78 /* Assets.xcassets */; };
 		163215D12D3CF09851327D59 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E94C23A1FD113FAA102644 /* ContentView.swift */; };
 		1C1637BC54F31F6C49E1C1FF /* CutPasteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21774273A31AB93B8F0E152 /* CutPasteState.swift */; };
 		1C9023561E518D74926BBA0A /* NewFileTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4D15F9FD072C4C293307B /* NewFileTemplate.swift */; };
@@ -20,6 +21,7 @@
 		404460B71B7639BBE2E50F6C /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */; };
 		48A3FCEF629C520CDE0BC30E /* FileTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */; };
 		4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */; };
+		544360B4F199FC5880FF40CE /* RightKitAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5CC206310BFD5A48C0E14A /* RightKitAppDelegate.swift */; };
 		574773CE9F398BDC661E4189 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */; };
 		5969C352E4A3805EA31F24D9 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */; };
 		59F7CDEDC728CAE66516280D /* NewFileTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4D15F9FD072C4C293307B /* NewFileTemplate.swift */; };
@@ -29,16 +31,20 @@
 		780677E3EAAA16079670921F /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6566E60E1F21A1197C3C1D8 /* FinderSync.swift */; };
 		799E87AC0C7C81C69DCF2B0D /* RightKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B6AF2586CC554B165CAA1 /* RightKitLogger.swift */; };
 		7B1AFC095C7B2DD7CC9F75E5 /* FileActionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF36E322D1A24B33C2809CD /* FileActionService.swift */; };
+		7B36794315EAFAE59638BFCB /* AppLifecycleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEC21FE6D665D7D919CB013 /* AppLifecycleCoordinator.swift */; };
 		7F6618F8F5AE1583C3FED3FB /* FavoriteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */; };
 		872D372BF175DBA7CCFB9634 /* RightKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B6AF2586CC554B165CAA1 /* RightKitLogger.swift */; };
 		88D0F99DDF9BA759887AA92A /* AppConfigurationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2571F72FF4C8640D0BD1BC47 /* AppConfigurationStore.swift */; };
 		8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */; };
 		8EEAD474C4A0EE0F22F66576 /* CutPasteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21774273A31AB93B8F0E152 /* CutPasteState.swift */; };
 		9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587A59BDB98FDEC616A2D83 /* RightKitError.swift */; };
+		A2D657A6183C37A3BA5DDC55 /* FinderExtensionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE48EAF2595BD3F1143E10E /* FinderExtensionController.swift */; };
 		A88E5A7EAF3880064C68E956 /* FavoriteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */; };
 		B5AAA91AFF36B592554C987B /* RightKitFinderExt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B8CA6811F0A713F2CBA910DC /* UniqueFileURLResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6380250E4909A00DA8855D1 /* UniqueFileURLResolver.swift */; };
 		BCD582801BF779F146076249 /* SecurityScopedResourceAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1834577AA0EEFA8E118FC5 /* SecurityScopedResourceAccess.swift */; };
+		C76EF09204248D01287902C2 /* MenuBarExtraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B56CCE16F8E8D5EDD49E622 /* MenuBarExtraView.swift */; };
+		CE194A41BBA3C86284350E25 /* LaunchAtLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7266AA32BAD35650EFF8EFD9 /* LaunchAtLoginController.swift */; };
 		CE1F5F820CB6A25BBAD5C792 /* FileActionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF36E322D1A24B33C2809CD /* FileActionService.swift */; };
 		E89C470DD9FD677FFC564681 /* RightKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587A59BDB98FDEC616A2D83 /* RightKitError.swift */; };
 		F5B60E76D99A85AE86851577 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B9765C832FE40C8FD81EE /* AppViewModel.swift */; };
@@ -73,25 +79,31 @@
 		0E5D05D05DC1D76A78E30B90 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		0FCC2CA924421EE152D26249 /* RightKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
+		1B56CCE16F8E8D5EDD49E622 /* MenuBarExtraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarExtraView.swift; sourceTree = "<group>"; };
 		2037650D0FEC1D9F3A173F88 /* RightKitFinderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightKitFinderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2571F72FF4C8640D0BD1BC47 /* AppConfigurationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationStore.swift; sourceTree = "<group>"; };
 		26DAC98A8AB2CEF5D50D9DB1 /* FavoriteDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDirectory.swift; sourceTree = "<group>"; };
+		2CE48EAF2595BD3F1143E10E /* FinderExtensionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderExtensionController.swift; sourceTree = "<group>"; };
 		34F9E7742539559D214A58EC /* FavoriteDirectoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDirectoriesView.swift; sourceTree = "<group>"; };
 		6AD4D15F9FD072C4C293307B /* NewFileTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFileTemplate.swift; sourceTree = "<group>"; };
 		6C6B9765C832FE40C8FD81EE /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitApp.swift; sourceTree = "<group>"; };
+		7266AA32BAD35650EFF8EFD9 /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
 		9587A59BDB98FDEC616A2D83 /* RightKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitError.swift; sourceTree = "<group>"; };
+		98013C09F8C3C8E667622F78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9E752E6B22C80D585628375F /* RightKitIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitIconProvider.swift; sourceTree = "<group>"; };
 		A21774273A31AB93B8F0E152 /* CutPasteState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutPasteState.swift; sourceTree = "<group>"; };
 		A3E94C23A1FD113FAA102644 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AB1834577AA0EEFA8E118FC5 /* SecurityScopedResourceAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedResourceAccess.swift; sourceTree = "<group>"; };
 		B6380250E4909A00DA8855D1 /* UniqueFileURLResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueFileURLResolver.swift; sourceTree = "<group>"; };
+		BBEC21FE6D665D7D919CB013 /* AppLifecycleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleCoordinator.swift; sourceTree = "<group>"; };
 		BEF36E322D1A24B33C2809CD /* FileActionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionService.swift; sourceTree = "<group>"; };
 		C220231D9659B5A17638C91A /* RightKitStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitStrings.swift; sourceTree = "<group>"; };
 		DDDEAE1FFFD62562F558B7C3 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTemplatesView.swift; sourceTree = "<group>"; };
 		F53B6AF2586CC554B165CAA1 /* RightKitLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitLogger.swift; sourceTree = "<group>"; };
 		F6566E60E1F21A1197C3C1D8 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		FB5CC206310BFD5A48C0E14A /* RightKitAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightKitAppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -141,6 +153,7 @@
 			children = (
 				34F9E7742539559D214A58EC /* FavoriteDirectoriesView.swift */,
 				E5B96F8FB9EF284E4B922A67 /* FileTemplatesView.swift */,
+				1B56CCE16F8E8D5EDD49E622 /* MenuBarExtraView.swift */,
 				1AF2A6E4241C6A07BDBF12B6 /* SharedViews.swift */,
 				07EDDD6C80023969E4B89527 /* StatusView.swift */,
 			);
@@ -187,9 +200,14 @@
 		DC8723E8274A2E162BAE829E /* RightKitApp */ = {
 			isa = PBXGroup;
 			children = (
+				BBEC21FE6D665D7D919CB013 /* AppLifecycleCoordinator.swift */,
 				6C6B9765C832FE40C8FD81EE /* AppViewModel.swift */,
+				98013C09F8C3C8E667622F78 /* Assets.xcassets */,
 				A3E94C23A1FD113FAA102644 /* ContentView.swift */,
+				2CE48EAF2595BD3F1143E10E /* FinderExtensionController.swift */,
+				7266AA32BAD35650EFF8EFD9 /* LaunchAtLoginController.swift */,
 				6D4CD3F29663C5C39BD32F75 /* RightKitApp.swift */,
+				FB5CC206310BFD5A48C0E14A /* RightKitAppDelegate.swift */,
 				2CBAE65E471D860BEFA5D2C3 /* Views */,
 			);
 			path = RightKitApp;
@@ -220,6 +238,7 @@
 			buildConfigurationList = 071FA341E9663A22D0ACE610 /* Build configuration list for PBXNativeTarget "RightKitApp" */;
 			buildPhases = (
 				B77376716AC5FA13C76F72B3 /* Sources */,
+				4D16B0ABC9C82C28B7AAC490 /* Resources */,
 				802486937C4FDAA825E1F473 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -306,6 +325,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		4D16B0ABC9C82C28B7AAC490 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1565E6D00ECAAA94D7E6C930 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		20D07F3514E7149ABABEFACC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -335,6 +365,7 @@
 				39151C03ECFC261EDF97A20A /* AppConfigurationStore.swift in Sources */,
 				4F00953D80CEBAE96CA190A6 /* AppGroup.swift in Sources */,
 				574773CE9F398BDC661E4189 /* AppLanguage.swift in Sources */,
+				7B36794315EAFAE59638BFCB /* AppLifecycleCoordinator.swift in Sources */,
 				F5B60E76D99A85AE86851577 /* AppViewModel.swift in Sources */,
 				163215D12D3CF09851327D59 /* ContentView.swift in Sources */,
 				1C1637BC54F31F6C49E1C1FF /* CutPasteState.swift in Sources */,
@@ -342,8 +373,12 @@
 				7F6618F8F5AE1583C3FED3FB /* FavoriteDirectory.swift in Sources */,
 				CE1F5F820CB6A25BBAD5C792 /* FileActionService.swift in Sources */,
 				48A3FCEF629C520CDE0BC30E /* FileTemplatesView.swift in Sources */,
+				A2D657A6183C37A3BA5DDC55 /* FinderExtensionController.swift in Sources */,
+				CE194A41BBA3C86284350E25 /* LaunchAtLoginController.swift in Sources */,
+				C76EF09204248D01287902C2 /* MenuBarExtraView.swift in Sources */,
 				1C9023561E518D74926BBA0A /* NewFileTemplate.swift in Sources */,
 				8A36CABFFE0A6390597CF684 /* RightKitApp.swift in Sources */,
+				544360B4F199FC5880FF40CE /* RightKitAppDelegate.swift in Sources */,
 				9C6F0E8ADD189BDA2ED6DA16 /* RightKitError.swift in Sources */,
 				24452C4CA8B5141B9D7FB86A /* RightKitIconProvider.swift in Sources */,
 				799E87AC0C7C81C69DCF2B0D /* RightKitLogger.swift in Sources */,

@@ -7,10 +7,11 @@ final class AppConfigurationStore {
         static let enabledTemplateExtensions = "enabledTemplateExtensions"
         static let cutPasteState = "cutPasteState"
         static let language = "language"
-        static let showMenuIcons = "showMenuIcons"
+        static let showContextMenuIcons = "showMenuIcons"
         static let favoriteDirectoriesEnabled = "favoriteDirectoriesEnabled"
         static let openNewFileAfterCreate = "openNewFileAfterCreate"
         static let playSoundAfterCreate = "playSoundAfterCreate"
+        static let finderExtensionSessionActive = "finderExtensionSessionActive"
     }
 
     private let defaults: UserDefaults
@@ -78,12 +79,12 @@ final class AppConfigurationStore {
         defaults.set(language.rawValue, forKey: Key.language)
     }
 
-    func loadShowMenuIcons() -> Bool {
-        loadBool(forKey: Key.showMenuIcons, defaultValue: true)
+    func loadShowContextMenuIcons() -> Bool {
+        loadBool(forKey: Key.showContextMenuIcons, defaultValue: true)
     }
 
-    func saveShowMenuIcons(_ isEnabled: Bool) {
-        defaults.set(isEnabled, forKey: Key.showMenuIcons)
+    func saveShowContextMenuIcons(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: Key.showContextMenuIcons)
     }
 
     func loadFavoriteDirectoriesEnabled() -> Bool {
@@ -108,6 +109,14 @@ final class AppConfigurationStore {
 
     func savePlaySoundAfterCreate(_ isEnabled: Bool) {
         defaults.set(isEnabled, forKey: Key.playSoundAfterCreate)
+    }
+
+    func loadFinderExtensionSessionActive() -> Bool {
+        loadBool(forKey: Key.finderExtensionSessionActive, defaultValue: false)
+    }
+
+    func saveFinderExtensionSessionActive(_ isActive: Bool) {
+        defaults.set(isActive, forKey: Key.finderExtensionSessionActive)
     }
 
     private func load<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {
