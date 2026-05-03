@@ -1,6 +1,7 @@
 name: RightKit
 options:
   createIntermediateGroups: true
+  projectFormat: xcode15_3
   deploymentTarget:
     macOS: "13.0"
 settings:
