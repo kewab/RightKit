@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version without the leading v, for example 0.1.1"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: macos-14
+
+    steps:
+      - name: Resolve release metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+            TAG="v${VERSION}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+            VERSION="${TAG#v}"
+          fi
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Unsupported version: $VERSION" >&2
+            exit 1
+          fi
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "release_name=RightKit $VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install XcodeGen
+        shell: bash
+        run: brew install xcodegen
+
+      - name: Sync release version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.meta.outputs.version }}"
+
+          sed -i '' -E "s/(MARKETING_VERSION:[[:space:]]*).*/\\1${VERSION}/" project.yml
+          sed -i '' -E "s/(CURRENT_PROJECT_VERSION:[[:space:]]*).*/\\1${GITHUB_RUN_NUMBER}/" project.yml
+
+      - name: Build arm64 release artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          Scripts/build_release.sh "${{ steps.meta.outputs.version }}"
+
+      - name: Verify expected DMG
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED=".build/releases/artifacts/RightKit-${{ steps.meta.outputs.version }}-mac-arm64.dmg"
+          if [[ ! -f "$EXPECTED" ]]; then
+            echo "Missing expected artifact: $EXPECTED" >&2
+            find .build/releases -maxdepth 3 -type f | sort >&2 || true
+            exit 1
+          fi
+
+      - name: Prepare release notes
+        shell: bash
+        run: |
+          cat <<'EOF' > release-notes.md
+          Automated GitHub release for RightKit ${{ steps.meta.outputs.version }}.
+
+          Artifacts:
+          - RightKit-${{ steps.meta.outputs.version }}-mac-arm64.dmg
+          - RightKit-${{ steps.meta.outputs.version }}-mac-arm64.zip
+          EOF
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RightKit-${{ steps.meta.outputs.version }}-release
+          path: .build/releases/artifacts/*
+          retention-days: 14
+
+      - name: Create or update GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: ".build/releases/artifacts/*"
+          bodyFile: release-notes.md
+          commit: ${{ github.sha }}
+          name: ${{ steps.meta.outputs.release_name }}
+          replacesArtifacts: true
+          tag: ${{ steps.meta.outputs.tag }}
